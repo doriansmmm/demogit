@@ -1,0 +1,151 @@
+Screen_Historial_Llaves_Seguridad As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =Refresh(EntregaRecepcionLlaves);
+        ClearCollect(colEntregaRecepcionLlaves, Filter(EntregaRecepcionLlaves, TipoAccion="ENTREGA"));
+
+    "Gallery1_2 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =Parent.Height-Image1_12.Height-Label6_5.Height
+        Items: =colEntregaRecepcionLlaves
+        Layout: =Layout.Vertical
+        OnSelect: |-
+            =Set(varLlaves, "2");
+            Set(varLlavesRegistrado2, Blank());
+            Set(varLlavesRegistrado2, "L-"&ThisItem.ID);
+            Navigate(Screen_Registro_Llaves_Seguridad,ScreenTransition.Cover);
+        TemplatePadding: =0
+        TemplateSize: =84
+        Width: =If(Screen_Historial_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-20)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =If(Screen_Historial_Llaves_Seguridad.Size > 2, Label6_5.Y+Label6_5.Height, Icon1_27.Y+Icon1_27.Height)
+        ZIndex: =10
+
+        Title2_1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: |-
+                =Set(varLlaves, "2");
+                Set(varLlavesRegistrado2, Blank());
+                Set(varLlavesRegistrado2, "L-"&ThisItem.ID);
+                Navigate(Screen_Registro_Llaves_Seguridad,ScreenTransition.Cover);
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: |-
+                ="Folio: " & ThisItem.Title
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth
+            Y: =14
+            ZIndex: =2
+
+        NextArrow1_1 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: |-
+                =Set(varLlaves, "2");
+                Set(varLlavesRegistrado2, Blank());
+                Set(varLlavesRegistrado2, "L-"&ThisItem.ID);
+                Navigate(Screen_Registro_Llaves_Seguridad,ScreenTransition.Cover);
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="Ver los detalles del elemento"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator2_1 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Fill: =RGBA(0, 0, 0, 1)
+            Height: =1
+            OnSelect: |-
+                =Set(varLlaves, "2");
+                Set(varLlavesRegistrado, Blank());
+                Set(varLlavesRegistrado, ThisItem);
+                Navigate(Screen_Registro_Llaves_Seguridad,ScreenTransition.Cover);
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+    Group10_6 As group:
+        Height: =5
+        Width: =5
+        X: =1286
+        Y: =688
+        ZIndex: =10
+
+        Image7_28 As image:
+            Height: =If(Screen_Historial_Llaves_Seguridad.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Historial_Llaves_Seguridad.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_28.Width
+            Y: =Label6_5.Y+Label6_5.Height
+            ZIndex: =8
+
+        Icon1_27 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_28.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_28.Width
+            X: =Image7_28.X
+            Y: =Image7_28.Y
+            ZIndex: =9
+
+    Group4_5 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =10
+
+        Image1_12 As image:
+            Height: =If(Screen_Historial_Llaves_Seguridad.Size > 2, 150, 100)
+            Image: =EncabezadoPantallaCel1
+            ImagePosition: =ImagePosition.Fill
+            Width: =Parent.Width
+            X: =Parent.Width/2-Image1_12.Width/2
+            ZIndex: =1
+
+        Label6_5 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(0, 0, 0, 1)
+            FontWeight: =FontWeight.Bold
+            Size: =If(Screen_Historial_Llaves_Seguridad.Size > 2, 15, 13)
+            Text: ="Entrega-recepción de llaves de cajas de seguridad"
+            Width: =Image1_12.Width
+            X: =Image1_12.X
+            Y: =Image1_12.Y+Image1_12.Height
+            ZIndex: =3
+
+    Group7_17 As group:
+        Height: =5
+        Width: =5
+        X: =20
+        Y: =20
+        ZIndex: =13
+
+        Image7_27 As image:
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Y: =Label6_5.Y+Label6_5.Height
+            ZIndex: =11
+
+        Icon1_26 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_27.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index_Llaves_Seguridad,ScreenTransition.Cover)
+            Width: =Image7_27.Width
+            X: =Image7_27.X
+            Y: =Image7_27.Y
+            ZIndex: =12
+

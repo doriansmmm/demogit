@@ -1,0 +1,453 @@
+Screen_Registro_Asistencia As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =Set(varFirmaAsist, Blank());
+        Set(varFirmaAsistFinal, Blank());
+
+    Image1_14 As image:
+        Height: =If(Screen_Registro_Asistencia.Size > 2, 100, 100)
+        Image: =EncabezadoPantallaCel1
+        ImagePosition: =ImagePosition.Fill
+        Width: =Parent.Width/2+Parent.Width/3
+        X: =Parent.Width/2-Image1_14.Width/2
+        ZIndex: =7
+
+    Button1_8 As button:
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(235, 38, 44, 1)
+        Height: =55
+        Size: =If(Screen_Index_Reporte_Robo.Size > 2, 15, 10)
+        Text: |-
+            ="Registro Asistencia
+            "
+        Width: =If(Screen_Registro_Asistencia.Size > 2, Parent.Width/3+50, Parent.Width/2+50) 
+        X: =Parent.Width/2-Self.Width/2
+        ZIndex: =8
+
+    Container14_1 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Image1_14.Height-20
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Width: =Parent.Width/2+Parent.Width/3
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Image1_14.Y+Image1_14.Height+20
+        ZIndex: =9
+
+        Container2_7 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Registro_Asistencia.Size > 2, 80, 160)
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =2
+
+            Container3_8 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_7.Width
+                ZIndex: =1
+
+                Label8_13 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Nombres"
+                    Width: =If(Screen_Registro_Asistencia.Size > 2, Image1_14.Width/2-20, Image1_14.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                txtNombre1_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =""
+                    DisplayMode: =Edit
+                    Height: =30
+                    HintText: ="Ingresa tus nombres"
+                    Width: =Label8_13.Width
+                    X: =Label8_13.X
+                    Y: =Label8_13.Y+Label8_13.Height
+                    ZIndex: =2
+
+            Container4_5 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_7.Width
+                ZIndex: =2
+
+                Label8_14 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    Text: ="Apellidos"
+                    Width: =If(Screen_Registro_Asistencia.Size > 2,Image1_14.Width/2-20, Image1_14.Width-20)
+                    X: =If(Screen_Index.Size > 2,Label8_13.X+Label8_13.Width, Label8_13.X)
+                    Y: =If(Screen_Index.Size > 2, Label8_13.Y, txtNombre1_1.Y+Label8_14.Height)
+                    ZIndex: =1
+
+                txtApellidos1_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =""
+                    DisplayMode: =Edit
+                    Height: =30
+                    HintText: ="Ingresa tus apellidos"
+                    Width: =Label8_14.Width
+                    X: =Label8_14.X
+                    Y: =Label8_14.Y+Label8_14.Height
+                    ZIndex: =2
+
+        Container2_8 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =80
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =3
+
+            Container3_9 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_8.Width
+                ZIndex: =1
+
+                Label8_15 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Puesto"
+                    Width: =If(Screen_Registro_Asistencia.Size > 2, Image1_14.Width/2-20, Image1_14.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                DpPuesto As dropdown:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    ChevronBackground: =RGBA(184, 0, 0, 1)
+                    ChevronHoverBackground: =ColorFade(Self.Fill, -20%)
+                    Height: =30
+                    Items: =["Guardia", "Encargado"]
+                    PressedFill: =RGBA(184, 0, 0, 1)
+                    SelectionFill: =RGBA(184, 0, 0, 1)
+                    Width: =Label8_15.Width
+                    ZIndex: =2
+
+        Container2_9 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =80
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Visible: =false
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =4
+
+            Container3_10 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                Width: =Container2_9.Width
+                ZIndex: =1
+
+                Image5_10 As image:
+                    FillPortions: =1
+                    Height: =50
+                    Image: =If(!IsBlank(varFirmaAsist), BotónFirmaAceptada, BotónIngresarFirma)
+                    OnSelect: =Set(_bandFirma, true);//Reset(PenInput1_4);;
+                    ZIndex: =1
+
+        Button5_1 As button:
+            AlignInContainer: =AlignInContainer.Center
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =If(IsBlank(Trim(txtNombre1_1.Text)) || IsBlank(Trim(txtApellidos1_1.Text)),
+                    Notify("Debes de ingresar todos los datos del formulario",NotificationType.Error),
+                    //If(IsBlank(varFirmaAsistFinal);
+                        //Notify("Debes de ingresar la firma";NotificationType.Error);
+                        Set(varFirmaAsist, Blank());
+                        Set(varFirmaAsistFinal, Blank());
+                        Reset(PenInput1_4);
+                        Set(_bandFirmaAsist, true)
+                        //Set(_bandAsist; true)
+                    //)
+                
+                )
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Registrar"
+            Width: =250
+            ZIndex: =8
+
+    Group8_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =17
+
+        Rectangle1_5 As rectangle:
+            Fill: =RGBA(237, 125, 49, 0.57)
+            Height: =Parent.Height
+            Visible: =_bandFirma || _bandFirma2
+            Width: =Parent.Width
+            ZIndex: =10
+
+        Label4_11 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =90
+            Size: =If(Screen_Index.Size > 2, 30, 15)
+            Text: ="Firma en el recuadro blanco"
+            Visible: =_bandFirma || _bandFirma2
+            Width: =Parent.Width
+            Y: =PenInput1_4.Y-Label4_11.Height
+            ZIndex: =11
+
+        Image6_14 As image:
+            Height: =50
+            Image: =BotónAceptar
+            OnSelect: |-
+                =
+                If(varFirmaAsist=PenInput1_4.Image,
+                    Set(_bandAsist, true);
+                    Set(_bandFirmaAsist, false);
+                    Set(varFirmaAsistFinal, JSON(varFirmaAsist,JSONFormat.IncludeBinaryData));
+                    Set(_bandFirma, false),
+                    Set(_bandAsist, false);
+                    Set(_bandFirma, false);
+                    Set(_bandFirmaAsist, true);
+                    Set(varFirmaAsistFinal, Blank());
+                )
+            Visible: =_bandFirma
+            Width: =50
+            X: =PenInput1_4.X+PenInput1_4.Width-Image6_14.Width*2-20
+            Y: =PenInput1_4.Y+PenInput1_4.Height+10
+            ZIndex: =13
+
+        Image6_13 As image:
+            Height: =50
+            Image: =BotónCancelar
+            OnSelect: =Reset(PenInput1_4);Set(_bandFirma, false);
+            Visible: =If(varLlaves="1" && _bandFirma, true, First(colBandLlaves)._bandEntrega, _bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+            Width: =50
+            X: =PenInput1_4.X+PenInput1_4.Width-Image6_13.Width
+            Y: =PenInput1_4.Y+PenInput1_4.Height+10
+            ZIndex: =14
+
+        PenInput1_4 As inkControl:
+            Fill: =RGBA(255, 255, 255, 1)
+            OnSelect: =Set(varFirmaAsist, Self.Image);
+            Reset: =true
+            Visible: =_bandFirma
+            Width: =If(Screen_Index.Size > 2, Parent.Width/2, Parent.Width-10)
+            X: =Parent.Width/2-PenInput1_4.Width/2
+            Y: =Parent.Height/2-PenInput1_4.Height/2
+            ZIndex: =15
+
+    Label8 As label:
+        Text: =varFirmaAsistFinal
+        X: =40
+        Y: =40
+        ZIndex: =21
+
+    Group9_3 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =21
+
+        Rectangle3_5 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.76)
+            Height: =Parent.Height
+            Visible: =_bandAsist Or _bandFirmaAsist
+            Width: =Parent.Width
+            ZIndex: =16
+
+        Rectangle4_5 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            Visible: =_bandAsist Or _bandFirmaAsist
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/3, Parent.Width-20)
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Parent.Height/2-Self.Height/2
+            ZIndex: =17
+
+        Label9_5 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =50
+            Text: =If(_bandFirmaAsist, "Ingresa tu firma", "¿Estás seguro de registrar tu asistencia?")
+            Visible: =_bandAsist || _bandFirmaAsist
+            Width: =Rectangle4_5.Width
+            X: =Rectangle4_5.X
+            Y: =Rectangle4_5.Y
+            ZIndex: =18
+
+        Button7_8 As button:
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =
+                Set(varDGAsistencia, 
+                    Patch(RegistroAsistencia, Defaults(RegistroAsistencia),
+                        {
+                            Title: "A-",
+                            Nombres: txtNombre1_1.Text,
+                            Apellidos: txtApellidos1_1.Text,
+                            Puesto:  DpPuesto.Selected.Value,
+                            Fecha: Text(Now(), "dd-mm-yyyy"),
+                            HoraEntrada: Text(Now(), "hh:mm"),
+                            FirmaEntrada: varFirmaAsistFinal
+                        }
+                    )
+                );
+                UpdateIf(RegistroAsistencia, ID=varDGAsistencia.ID, { Title: "A-"&varDGAsistencia.ID });
+                
+                Reset(txtNombre1_1);
+                Reset(txtApellidos1_1);
+                Reset(PenInput1_4);
+                
+                Set(_bandAsist, false);
+                Navigate(Screen_Confirm_Asistencia,ScreenTransition.Cover);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Registrar"
+            Visible: =_bandAsist
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Label22.Y+Label22.Height*2
+            ZIndex: =19
+
+        Button7_9 As button:
+            Fill: =RGBA(184, 0, 0, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(_bandAsist, false);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Cancelar"
+            Visible: =_bandAsist
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Button7_8.Y+Button7_8.Height+20
+            ZIndex: =20
+
+    Button11 As button:
+        OnSelect: |-
+            =Set(_bandFirmaAsist, false);
+            Set(_bandAsist, true)
+        Text: ="Botón"
+        X: =30
+        Y: =710
+        ZIndex: =22
+
+    Button7_15 As button:
+        Fill: =RGBA(184, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: =Set(_bandFirmaAsist, false);
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Text: ="Cancelar"
+        Visible: =_bandFirmaAsist
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Button7_8.Y+Button7_8.Height+20
+        ZIndex: =23
+
+    Image5_15 As image:
+        Height: =50
+        Image: =If(varFirmaAsist=PenInput1_4.Image, BotónFirmaAceptada, BotónIngresarFirma)
+        OnSelect: =Set(_bandFirma, true);Set(_bandFirmaAsist, false);
+        Visible: =_bandFirmaAsist
+        Width: =Label9_5.Width
+        X: =Label9_5.X
+        Y: =Rectangle4_5.Y+Rectangle4_5.Height/2-Self.Height/2
+        ZIndex: =24
+
+    Group7_19 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =40
+
+        Image7_33 As image:
+            Height: =If(Screen_Registro_Asistencia.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Registro_Asistencia.Size > 2,50, 40)
+            X: =Parent.Width-Self.Width
+            Y: =20
+            ZIndex: =5
+
+        Icon1_30 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_33.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_33.Width
+            X: =Image7_33.X
+            Y: =Image7_33.Y
+            ZIndex: =6
+
+    Group7_18 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =42
+
+        Image7_32 As image:
+            Height: =If(Screen_Registro_Asistencia.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Registro_Asistencia.Size > 2, 50, 40)
+            Y: =20
+            ZIndex: =3
+
+        Icon1_29 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_32.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index_Registro_Asistencia,ScreenTransition.Cover)
+            Width: =Image7_32.Width
+            X: =Image7_32.X
+            Y: =Image7_32.Y
+            ZIndex: =4
+

@@ -1,0 +1,299 @@
+Screen_Busqueda_Folio As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =
+        /*
+        Refresh(RegIngreProvContr);;
+        ClearCollect(colRegIngreProvContr; Filter(RegIngreProvContr; Estatus=true));;
+        */
+        Refresh(RegIngreProvContr);
+        ClearCollect(colRegIngreProvContr, Filter(RegIngreProvContr, Estatus=true));
+        ClearCollect(colRegIngreProvContr, Filter(colRegIngreProvContr, DateValue(Text(Now(), "dd-mm-yyyy")) >= DateValue(FechaInicio) && DateValue(Text(Now(), "dd-mm-yyyy")) <= DateValue(FechaFin) ));
+        
+        Refresh(RegIngreVisitas);
+        ClearCollect(colRegIngreVisitas, Filter(RegIngreVisitas, Fecha=Text(Now(), "dd-mm-yyyy")));
+        ClearCollect(colTodos, With(
+                {
+                    outputTable: Ungroup(
+                        Table(/* Create the table with child tables. If you want to join more tables, add more items to this table and the formula will work the same way*/
+                            {tableObject: colRegIngreProvContr},
+                            {tableObject: colRegIngreVisitas}
+                        ),
+                        "tableObject"
+                    )/* Merges all the tables into a single one, but no duplicates removed */
+                },
+                ShowColumns( //Display only the columns needed
+                    GroupBy(
+                        outputTable,
+                        "Title",//add the columns to extract distinct data. any column to be used has to be added here, and in the ShowColumns piece
+                        "Codigo",
+                        "Nombre",
+                        "Fecha",
+                        "Compania",
+                        "FechaInicio",
+                        "FechaFin",
+                        "KeyAcceso",
+                        "Grouped"//Last parameter can be any name as it's just the name for a child table with grouped data
+                    ),
+            //same columns used on the GroupBy piece except the last one (the child table name)
+                    "Title",
+                    "Codigo",
+                    "Nombre",
+                    "Fecha",
+                    "Compania",
+                    "FechaInicio",
+                    "FechaFin",
+                    "KeyAcceso"
+                )
+            )
+        );
+        Reset(TextInput1);
+
+    Image1_4 As image:
+        Height: =If(Screen_Busqueda_Folio.Size > 2, 100, 100)
+        Image: =EncabezadoPantallaCel1
+        ImagePosition: =ImagePosition.Fill
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Button1_1 As button:
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(235, 38, 44, 1)
+        Height: =80
+        Size: =If(Screen_Index.Size > 2, 30, 15)
+        Text: ="Busqueda"
+        Width: =If(Screen_Busqueda_Folio.Size > 2, Parent.Width/3, Parent.Width/2) 
+        X: =Parent.Width/2-Button1_1.Width/2
+        Y: =(Image1_4.Y+Image1_4.Height)/2-Button1_1.Height/2
+        ZIndex: =2
+
+    Container5_1 As groupContainer.horizontalAutoLayoutContainer:
+        Height: =Parent.Height-Image1_4.Height
+        LayoutDirection: =If(Screen_Busqueda_Folio.Size > 2, LayoutDirection.Horizontal, LayoutDirection.Vertical)
+        LayoutGap: =50
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Width: =Parent.Width-Icon1_3.Width
+        Y: =Image1_4.Y+Image1_4.Height
+        ZIndex: =3
+
+        Container8_1 As groupContainer.verticalAutoLayoutContainer:
+            Height: =450
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =Label7_6.Height+txtFolioBusqueda_1.Height+Label7_7.Height+txtNombreBusqueda_1.Height+Label7_8.Height+DpFechaBusqueda_1.Height+Label7_9.Height+txtCompaniaBusqueda_1.Height+Label7_10.Height+Image8_1.Height*2
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            PaddingRight: =5
+            X: =121
+            Y: =258
+            ZIndex: =1
+
+            Label7_6 As label:
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Semibold
+                LayoutMinWidth: =0
+                Text: |-
+                    ="Folio:"
+                X: =40
+                Y: =330
+                ZIndex: =1
+
+            txtFolioBusqueda_1 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Clear: =true
+                Default: =""
+                LayoutMinWidth: =0
+                X: =220
+                Y: =297
+                ZIndex: =2
+
+            Label7_7 As label:
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Semibold
+                LayoutMinWidth: =0
+                Text: |-
+                    ="Nombre:"
+                X: =40
+                Y: =388
+                ZIndex: =3
+
+            txtNombreBusqueda_1 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Clear: =true
+                Default: =""
+                LayoutMinWidth: =0
+                X: =290
+                Y: =388
+                ZIndex: =4
+
+            Label7_8 As label:
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Semibold
+                LayoutMinWidth: =0
+                Text: |-
+                    ="Fecha:"
+                X: =40
+                Y: =474
+                ZIndex: =5
+
+            DpFechaBusqueda_1 As datepicker:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                IconBackground: =RGBA(184, 0, 0, 1)
+                LayoutMinWidth: =0
+                Width: =320
+                X: =377
+                Y: =527
+                ZIndex: =6
+
+            Label7_9 As label:
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Semibold
+                LayoutMinWidth: =0
+                Text: |-
+                    ="Compañía:"
+                X: =20
+                Y: =564
+                ZIndex: =7
+
+            txtCompaniaBusqueda_1 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Clear: =true
+                Default: =""
+                LayoutMinWidth: =0
+                X: =305
+                Y: =584
+                ZIndex: =8
+
+            Label7_10 As label:
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Bold
+                LayoutMinWidth: =0
+                Text: ="Escanear QR"
+                X: =390
+                Y: =666
+                ZIndex: =9
+
+            Image8_1 As image:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =50
+                Image: =BotónEscanearQR
+                X: =621
+                Y: =688
+                ZIndex: =10
+
+        Container9_1 As groupContainer.verticalAutoLayoutContainer:
+            Height: =429
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+            LayoutMinHeight: =500
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingBottom: =5
+            PaddingLeft: =5
+            PaddingRight: =5
+            PaddingTop: =5
+            X: =703
+            Y: =279
+            ZIndex: =2
+
+            Label5_3 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                Color: =RGBA(184, 0, 0, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =42
+                Size: =20
+                Text: ="Resultados"
+                Width: =362
+                X: =793
+                Y: =227
+                ZIndex: =1
+
+            "Gallery1_1 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                BorderColor: =RGBA(0, 0, 0, 1)
+                BorderThickness: =1
+                Height: =280
+                Items: |-
+                    =/*
+                    Filter(colRegIngreProvContr; StartsWith(Lower(Title); Lower(txtFolioBusqueda_1.Text)) And StartsWith(Lower(Nombre); Lower(txtNombreBusqueda_1.Text)) And DpFechaBusqueda_1.SelectedDate >= DateValue(FechaInicio) && DpFechaBusqueda_1.SelectedDate <= DateValue(FechaFin) And StartsWith(Lower(Compania); Lower(txtCompaniaBusqueda_1.Text)))
+                    */
+                    //colTodos
+                    Filter(colTodos, StartsWith(Lower(Title), Lower(txtFolioBusqueda_1.Text)) And StartsWith(Lower(Nombre), Lower(txtNombreBusqueda_1.Text)) And DpFechaBusqueda_1.SelectedDate >= DateValue(FechaInicio) && DpFechaBusqueda_1.SelectedDate <= DateValue(FechaFin) And StartsWith(Lower(Compania), Lower(txtCompaniaBusqueda_1.Text)))
+                Layout: =Layout.Vertical
+                LayoutMinHeight: =287
+                LayoutMinWidth: =320
+                TemplatePadding: =0
+                TemplateSize: =52
+                Width: =414
+                X: =837
+                Y: =293
+                ZIndex: =2
+
+                Title1_1 As label:
+                    Height: =Self.Size * 1.8
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =ThisItem.Title & " " & ThisItem.Nombre
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =Parent.TemplateWidth
+                    ZIndex: =2
+
+                Separator1_1 As rectangle:
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =5
+
+                Icon4 As icon.Add:
+                    Color: =RGBA(0, 0, 0, 0)
+                    Height: =Parent.TemplateHeight
+                    Icon: =Icon.Add
+                    OnSelect: |-
+                        =
+                        If(Lower(First(Split(ThisItem.Title, "-")).Result)="p", 
+                                Refresh(RegIngreProvContr);
+                                Set(varRegistroSelectProv, First(Filter(RegIngreProvContr, Title=ThisItem.Title)));
+                                Navigate(Screen_Detalle_Folio, ScreenTransition.Cover),
+                                Refresh(RegIngreVisitas);
+                                Set(varRegistroSelectVisit, First(Filter(RegIngreVisitas, Title=ThisItem.Title)));
+                                Navigate(Screen_Detalle_Folio_Visit, ScreenTransition.Cover)
+                            )
+                        /*
+                        Set(varRegistroSelect; ThisItem);;
+                        Navigate(Screen_Detalle_Folio; ScreenTransition.Cover)
+                        */
+                    Width: =Parent.TemplateWidth
+                    ZIndex: =6
+
+    Group10 As group:
+        Height: =5
+        Width: =5
+        X: =80
+        Y: =80
+        ZIndex: =6
+
+        Image7_3 As image:
+            Height: =If(Screen_Busqueda_Folio.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Busqueda_Folio.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_3.Width
+            Y: =Image1_4.Y+Image1_4.Height
+            ZIndex: =4
+
+        Icon1_3 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_3.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_3.Width
+            X: =Image7_3.X
+            Y: =Image7_3.Y
+            ZIndex: =5
+

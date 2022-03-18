@@ -1,0 +1,101 @@
+Screen_Confirm_Llaves_Seguridad As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+
+    Rectangle2_3 As rectangle:
+        BorderColor: =RGBA(235, 38, 44, 1)
+        BorderThickness: =5
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =Parent.Height-Image1_2.Height-Label7_2.Height*2
+        Width: =If(Screen_Index.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Rectangle2_3.Width/2
+        Y: =Label6_3.Y+Label6_3.Height+20
+        ZIndex: =10
+
+    Group10_4 As group:
+        Height: =5
+        Width: =5
+        X: =1286
+        Y: =688
+        ZIndex: =10
+
+        Image7_23 As image:
+            Height: =If(Screen_Confirm_Llaves_Seguridad.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Confirm_Llaves_Seguridad.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_23.Width
+            Y: =Label6_3.Y+Label6_3.Height
+            ZIndex: =8
+
+        Icon1_10 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_23.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_23.Width
+            X: =Image7_23.X
+            Y: =Image7_23.Y
+            ZIndex: =9
+
+    Group4_3 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =10
+
+        Image1_10 As image:
+            Height: =If(Screen_Confirm_Llaves_Seguridad.Size > 2, 150, 100)
+            Image: =EncabezadoPantallaCel1
+            ImagePosition: =ImagePosition.Fill
+            Width: =Parent.Width
+            X: =Parent.Width/2-Image1_10.Width/2
+            ZIndex: =1
+
+        Label6_3 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(0, 0, 0, 1)
+            FontWeight: =FontWeight.Bold
+            Size: =15
+            Text: ="Entrega-recepción de llaves de cajas de seguridad"
+            Width: =Image1_10.Width
+            X: =Image1_10.X
+            Y: =Image1_10.Y+Image1_10.Height
+            ZIndex: =3
+
+    Label46_3 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Text: ="Se ha generado un formato de Entrega-recepción de llaves de cajas de seguridad"
+        Width: =Rectangle2_3.Width
+        X: =Rectangle2_3.X
+        Y: =Rectangle2_3.Y
+        ZIndex: =11
+
+    Label46_5 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: |-
+            ="Folio: "& varLlavesRegistrado2
+        Width: =Rectangle2_3.Width
+        X: =Rectangle2_3.X
+        Y: =Rectangle2_3.Y+Rectangle2_3.Height/2-Self.Height/2
+        ZIndex: =12
+
+    Button7_1 As button:
+        Fill: =RGBA(184, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: |-
+            =Set(varLlaves, "2");
+            Navigate(Screen_Registro_Llaves_Seguridad,ScreenTransition.Cover);
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Text: ="Consultar"
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Label46_5.Y+Label46_5.Height*2
+        ZIndex: =13
+

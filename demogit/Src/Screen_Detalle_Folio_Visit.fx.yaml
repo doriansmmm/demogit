@@ -1,0 +1,561 @@
+Screen_Detalle_Folio_Visit As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |
+        =Refresh(CheckinOutVisit);
+        ClearCollect(colChecksVisit, Filter(CheckinOutVisit, Title=varRegistroSelectVisit.Title && Fecha=Text(Now(), "dd-mm-yyyy")));
+
+    Label3_6 As label:
+        Align: =Align.Center
+        Color: =RGBA(184, 0, 0, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =60
+        Size: =If(Screen_Detalle_Folio_Visit.Size > 2, 30, 15)
+        Text: ="Seguridad / Protección"
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Label3_7 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(54, 176, 75, 1)
+        FontWeight: =FontWeight.Bold
+        Size: =If(Screen_Detalle_Folio_Visit.Size > 2, 20, 15)
+        Text: ="Registro"
+        Width: =Parent.Width
+        Y: =Label3_6.Y+Label3_6.Height
+        ZIndex: =2
+
+    Container5_3 As groupContainer.horizontalAutoLayoutContainer:
+        Height: =Parent.Height-Label3_7.Height-Label3_6.Height-20
+        LayoutDirection: =If(Screen_Detalle_Folio_Visit.Size > 2, LayoutDirection.Horizontal, LayoutDirection.Vertical)
+        LayoutGap: =10
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        PaddingLeft: =5
+        PaddingTop: =5
+        Width: =Parent.Width
+        Y: =Label3_7.Y+Label3_7.Height+20
+        ZIndex: =3
+
+        Container8_2 As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.Start
+            BorderThickness: =1
+            Height: =Container11_7.Height+Label15_1.Height+Container11_8.Height+Container11_10.Height+Container11_11.Height+Container11_12.Height*2+Image1_8.Height+Container11_14.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =Container11_7.Height+Label15_1.Height+Container11_8.Height+Container11_10.Height+Container11_11.Height+Container11_12.Height*2+Image1_8.Height+Container11_14.Height
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            PaddingRight: =5
+            Width: =Parent.Width-20
+            X: =121
+            Y: =258
+            ZIndex: =1
+
+            Container11_7 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =1
+
+                Label13_7 As label:
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: ="Tipo de usuario"
+                    ZIndex: =1
+
+                Label14_7 As label:
+                    Align: =Align.Center
+                    BorderThickness: =1
+                    Fill: =RGBA(186, 202, 226, 1)
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: ="Visitante"
+                    ZIndex: =2
+
+            Label15_1 As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                LayoutMinWidth: =0
+                Text: =Upper(varRegistroSelectVisit.Nombre)
+                ZIndex: =2
+
+            Container11_8 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =3
+
+                Label13_8 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: ="Persona que visita"
+                    ZIndex: =1
+
+                Label14_8 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.PersonaVisita
+                    ZIndex: =2
+
+            Container11_10 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =If(Screen_Detalle_Folio_Visit.Size > 2, 40, 80)
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =4
+
+                Label13_10 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    Height: =If(Screen_Detalle_Folio_Visit.Size > 2, 40, 80)
+                    LayoutMinWidth: =0
+                    Text: |-
+                        ="Folio:"
+                    ZIndex: =1
+
+                Label14_10 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    Height: =If(Screen_Detalle_Folio_Visit.Size > 2, 40, 80)
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.Title
+                    ZIndex: =2
+
+            Container11_11 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =5
+
+                Label13_11 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: |-
+                        ="Vehículo:"
+                    ZIndex: =1
+
+                Label14_11 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.MarcaVehiculo
+                    ZIndex: =2
+
+            Container11_12 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =6
+
+                Label13_12 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: |-
+                        ="Placa:"
+                    ZIndex: =1
+
+                Label14_12 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.Placas
+                    ZIndex: =2
+
+            Container11_13 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =7
+
+                Label13_13 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: |-
+                        ="Vigencia:"
+                    ZIndex: =1
+
+                Label14_13 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.FechaInicio & " - " & varRegistroSelectVisit.FechaFin
+                    ZIndex: =2
+
+            Container11_14 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =40
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =8
+
+                Label13_14 As label:
+                    Align: =Align.Right
+                    FillPortions: =1
+                    LayoutMinWidth: =0
+                    Text: |-
+                        ="Clave de acceso:"
+                    ZIndex: =1
+
+                Label14_14 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =varRegistroSelectVisit.KeyAcceso
+                    ZIndex: =2
+
+            Image1_8 As image:
+                Image: =Substitute(varRegistroSelectVisit.Firma,Char(34),"")
+                PaddingBottom: =10
+                ZIndex: =9
+
+        Container9_2 As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.Start
+            Height: =Container11_7.Height+Label15_1.Height+Container11_8.Height+Container11_10.Height+Container11_11.Height+Container11_12.Height*2+Image1_8.Height//Container1_2.Height+Container1_3.Height+Image4_3.Height+Image4_4.Height*3+Container1_4.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =10
+            LayoutMinHeight: =Container11_7.Height+Label15_1.Height+Container11_8.Height+Container11_10.Height+Container11_11.Height+Container11_12.Height*2+Image1_8.Height//Container1_2.Height+Container1_3.Height+Image4_3.Height+Image4_4.Height*3+Container1_4.Height
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width-20
+            X: =703
+            Y: =279
+            ZIndex: =2
+
+            Container1_2 As groupContainer.horizontalAutoLayoutContainer:
+                FillPortions: =0
+                Height: =40
+                LayoutGap: =5
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =1
+
+                Image3_2 As image:
+                    DisplayMode: =If(IsBlank(First(colChecksVisit).CheckIn), DisplayMode.Edit, DisplayMode.Disabled)
+                    Height: =40
+                    Image: ='log-in'
+                    OnSelect: =Set(_popupEntrada, true);
+                    Width: =40
+                    ZIndex: =1
+
+                Label4_6 As label:
+                    DisplayMode: =If(IsBlank(First(colChecksVisit).CheckIn), DisplayMode.Edit, DisplayMode.Disabled)
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    OnSelect: =Set(_popupEntrada, true);
+                    Text: ="Registrar Entrada"
+                    ZIndex: =2
+
+                Label4_7 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =First(colChecksVisit).CheckIn //varRegistroSelect.HoraEntrada
+                    ZIndex: =3
+
+            Container1_3 As groupContainer.horizontalAutoLayoutContainer:
+                FillPortions: =0
+                Height: =40
+                LayoutGap: =5
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =2
+
+                Image3_3 As image:
+                    DisplayMode: =If(IsBlank(First(colChecksVisit).CheckOut), DisplayMode.Edit, DisplayMode.Disabled)
+                    Height: =40
+                    Image: ='log-in (1)'
+                    OnSelect: =Set(_popupSalida, true);
+                    Width: =40
+                    ZIndex: =1
+
+                Label4_8 As label:
+                    DisplayMode: =If(IsBlank(First(colChecksVisit).CheckOut), DisplayMode.Edit, DisplayMode.Disabled)
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    OnSelect: =Set(_popupSalida, true);
+                    Text: ="Registrar Salida"
+                    ZIndex: =2
+
+                Label4_9 As label:
+                    FillPortions: =1
+                    FontWeight: =FontWeight.Bold
+                    LayoutMinWidth: =0
+                    Text: =First(colChecksVisit).CheckOut//varRegistroSelect.HoraSalida
+                    ZIndex: =3
+
+            Image4_3 As image:
+                AlignInContainer: =AlignInContainer.Stretch
+                Height: =50
+                Image: =BotónHyE
+                LayoutMinWidth: =0
+                OnSelect: =Navigate(Screen_Detalle_Herramienta_Visit,ScreenTransition.Cover)
+                ZIndex: =3
+
+            Image4_4 As image:
+                AlignInContainer: =AlignInContainer.Stretch
+                DisplayMode: =If(!IsBlank(First(colChecksVisit).TipoVisita), DisplayMode.Disabled, Edit)
+                Height: =50
+                Image: =BotónNegarAcceso
+                LayoutMinWidth: =0
+                OnSelect: =Set(_bandNegarAcceso, true);
+                Visible: =If(!IsBlank(First(colChecksVisit).TipoVisita), false, true)
+                ZIndex: =4
+
+    Group7_10 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =6
+
+        Image7_17 As image:
+            Height: =If(Screen_Index.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Index.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_17.Width
+            ZIndex: =4
+
+        Icon1_18 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_17.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_17.Width
+            X: =Image7_17.X
+            Y: =Image7_17.Y
+            ZIndex: =5
+
+    Group7_11 As group:
+        Height: =5
+        Width: =5
+        X: =1286
+        Y: =40
+        ZIndex: =9
+
+        Image7_16 As image:
+            Height: =If(Screen_Index.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Index.Size > 2, 50, 40)
+            ZIndex: =7
+
+        Icon1_17 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_16.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Busqueda_Folio,ScreenTransition.Cover)
+            Width: =Image7_16.Width
+            X: =Image7_16.X
+            Y: =Image7_16.Y
+            ZIndex: =8
+
+    Label5_7 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: ="¿Quieres negar el acceso a este día?"
+        Visible: =_bandNegarAcceso
+        Width: =Rectangle2_2.Width
+        X: =Rectangle2_2.X
+        Y: =Rectangle2_2.Y
+        ZIndex: =17
+
+    Group3_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =17
+
+        Rectangle1_3 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.69)
+            Height: =Parent.Height
+            Visible: =_popupEntrada Or _popupSalida Or _bandNegarAcceso
+            Width: =Parent.Width
+            ZIndex: =9
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            Visible: =_popupEntrada Or _popupSalida Or _bandNegarAcceso
+            Width: =If(Screen_Detalle_Folio_Visit.Size > 2, Parent.Width/3, Parent.Width-20)
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Parent.Height/2-Self.Height/2
+            ZIndex: =10
+
+        Label5_6 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Text: =If(_popupSalida, "¿Registrar Salida?", "¿Registrar Entrada?")
+            Visible: =_popupEntrada Or _popupSalida
+            Width: =Rectangle2_2.Width
+            X: =Rectangle2_2.X
+            Y: =Rectangle2_2.Y
+            ZIndex: =11
+
+        separador_1 As label:
+            Text: =""
+            Visible: =_popupEntrada Or _popupSalida Or _bandNegarAcceso
+            Width: =10
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Label5_6.Y
+            ZIndex: =12
+
+        Image5_4 As image:
+            Height: =50
+            Image: =BotónAceptar
+            OnSelect: |-
+                =If(CountRows(colChecksVisit)=0,
+                    Patch(CheckinOutVisit, { Title: varRegistroSelectVisit.Title, CheckIn: Text(Now(), "hh:mm"), Fecha: Text(Now(), "dd-mm-yyyy"), TipoVisita: "Visitado"  }),
+                    UpdateIf(CheckinOutVisit, ID=First(colChecksVisit).ID, { CheckOut: Text(Now(), "hh:mm") })
+                );
+                Refresh(CheckinOutVisit);
+                ClearCollect(colChecksVisit, Filter(CheckinOutVisit, Title=varRegistroSelectVisit.Title && Fecha=Text(Now(), "dd-mm-yyyy")));
+                Set(_popupEntrada, false);Set(_popupSalida, false);
+                /*
+                If(_popupEntrada; 
+                    UpdateIf(RegIngreProvContr; ID=varRegistroSelect.ID; { HoraEntrada: Text(Now(); "hh:mm")});
+                    UpdateIf(RegIngreProvContr; ID=varRegistroSelect.ID; { HoraSalida: Text(Now(); "hh:mm")}) 
+                );;
+                Refresh(RegIngreProvContr);;
+                ClearCollect(colRegIngreProvContr; RegIngreProvContr);;
+                Set(varRegistroSelect; First(Filter(colRegIngreProvContr; ID=varRegistroSelect.ID)));;
+                Set(_popupEntrada; false);;Set(_popupSalida; false);;
+                */
+            Visible: =_popupEntrada Or _popupSalida
+            Width: =50
+            X: =separador_1.X-Self.Width*2
+            Y: =(Rectangle2_2.Y+Rectangle2_2.Height/2)-Self.Height/2
+            ZIndex: =13
+
+        Image5_5 As image:
+            Height: =40
+            Image: =BotónCancelar
+            OnSelect: =Set(_popupEntrada, false);Set(_popupSalida, false);
+            Visible: =_popupEntrada Or _popupSalida
+            Width: =50
+            X: =separador_1.X+Self.Width*2
+            Y: =(Rectangle2_2.Y+Rectangle2_2.Height/2)-Self.Height/2
+            ZIndex: =14
+
+        Label7_47 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            OnSelect: =Set(_popupEntrada, false);Set(_popupSalida, false);
+            Size: =15
+            Text: ="SI"
+            Visible: =_popupEntrada Or _popupSalida
+            Width: =Image5_4.Width
+            X: =Image5_4.X
+            Y: =Image5_4.Y+Image5_4.Height
+            ZIndex: =15
+
+        Label7_46 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            OnSelect: =Set(_popupEntrada, false);Set(_popupSalida, false);
+            Size: =15
+            Text: ="NO"
+            Visible: =_popupEntrada Or _popupSalida
+            Width: =Image5_5.Width
+            X: =Image5_5.X
+            Y: =Image5_5.Y+Image5_5.Height
+            ZIndex: =16
+
+    Image5_6 As image:
+        Height: =50
+        Image: =BotónAceptar
+        OnSelect: |
+            =If(IsBlank(Trim(TextInput10_1.Text)),
+                Notify("Debes de ingresar el motivo por el cual negarás el acceso")
+                ,
+                Patch(CheckinOutVisit, { Title: varRegistroSelectVisit.Title, CheckIn: Text(Now(), "hh:mm"), CheckOut: Text(Now(), "hh:mm"), Comentarios: TextInput10_1.Text, Fecha: Text(Now(), "dd-mm-yyyy"), TipoVisita: "Negada" });
+                Refresh(CheckinOutVisit);
+                ClearCollect(colChecksVisit, Filter(CheckinOutVisit, Title=varRegistroSelectVisit.Title && Fecha=Text(Now(), "dd-mm-yyyy")));
+                Reset(TextInput10_1);
+                Set(_bandNegarAcceso, false);
+            );
+        Visible: =_bandNegarAcceso
+        Width: =50
+        X: =TextInput10_1.X
+        Y: =TextInput10_1.Y+TextInput10_1.Height+10
+        ZIndex: =18
+
+    Image5_7 As image:
+        Height: =40
+        Image: =BotónCancelar
+        OnSelect: =Set(_bandNegarAcceso, false);Reset(TextInput10_1);
+        Visible: =_bandNegarAcceso
+        Width: =50
+        X: =TextInput10_1.X+TextInput10_1.Width-Self.Width
+        Y: =TextInput10_1.Y+TextInput10_1.Height+10
+        ZIndex: =19
+
+    TextInput10_1 As text:
+        BorderColor: =RGBA(0, 0, 0, 1)
+        Default: =""
+        Height: =100
+        HintText: ="Ingresa el motivo por el cual negarás el acceso"
+        Visible: =_bandNegarAcceso
+        Width: =If(Screen_Detalle_Folio_Visit.Size > 2, Rectangle2_2.Width-Rectangle2_2.Width/3, Rectangle2_2.Width-10)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Label5_7.Y+Label5_7.Height*2
+        ZIndex: =20
+
+    Label7_49 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        OnSelect: =Set(_popupEntrada, false);Set(_popupSalida, false);
+        Size: =15
+        Text: ="SI"
+        Visible: =_bandNegarAcceso
+        Width: =Image5_6.Width
+        X: =Image5_6.X
+        Y: =Image5_6.Y+Image5_6.Height
+        ZIndex: =21
+
+    Label7_48 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        OnSelect: =Set(_popupEntrada, false);Set(_popupSalida, false);
+        Size: =15
+        Text: ="NO"
+        Visible: = _bandNegarAcceso
+        Width: =Image5_7.Width
+        X: =Image5_7.X
+        Y: =Image5_7.Y+Image5_7.Height
+        ZIndex: =22
+

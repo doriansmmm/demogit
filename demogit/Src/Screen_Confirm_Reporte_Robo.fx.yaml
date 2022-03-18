@@ -1,0 +1,108 @@
+Screen_Confirm_Reporte_Robo As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+
+    Rectangle2_1 As rectangle:
+        BorderColor: =RGBA(235, 38, 44, 1)
+        BorderThickness: =5
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =Parent.Height-Image1_2.Height-Label7_2.Height*2
+        Width: =If(Screen_Index.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Rectangle2_1.Width/2
+        Y: =Label6_1.Y+Label6_1.Height+20
+        ZIndex: =10
+
+    Group10_2 As group:
+        Height: =5
+        Width: =5
+        X: =1286
+        Y: =688
+        ZIndex: =10
+
+        Image7_10 As image:
+            Height: =If(Screen_Confirm_Reporte_Robo.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Confirm_Reporte_Robo.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_10.Width
+            Y: =Label6_1.Y+Label6_1.Height
+            ZIndex: =8
+
+        Icon1_8 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_10.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_10.Width
+            X: =Image7_10.X
+            Y: =Image7_10.Y
+            ZIndex: =9
+
+    Group4_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =10
+
+        Image1_5 As image:
+            Height: =If(Screen_Confirm_Reporte_Robo.Size > 2, 150, 100)
+            Image: =EncabezadoPantallaCel1
+            ImagePosition: =ImagePosition.Fill
+            Width: =Parent.Width
+            X: =Parent.Width/2-Image1_5.Width/2
+            ZIndex: =1
+
+        Label6_1 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(0, 0, 0, 1)
+            FontWeight: =FontWeight.Bold
+            Size: =15
+            Text: ="Registro reporte de robo y asalto"
+            Width: =Image1_5.Width
+            X: =Image1_5.X
+            Y: =Image1_5.Y+Image1_5.Height
+            ZIndex: =3
+
+    Label46 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: ="Se ha generado un formato de robo y asalto"
+        Width: =Rectangle2_1.Width
+        X: =Rectangle2_1.X
+        Y: =Rectangle2_1.Y
+        ZIndex: =11
+
+    Label46_1 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: |-
+            ="Folio: F-" & varReporteRegistrado.ID
+        Width: =Rectangle2_1.Width
+        X: =Rectangle2_1.X
+        Y: =Rectangle2_1.Y+Rectangle2_1.Height/2-Self.Height/2
+        ZIndex: =12
+
+    Button7 As button:
+        Fill: =RGBA(184, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: =Navigate(Screen_Detalle_Reporte_Robo,ScreenTransition.Cover)
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Text: ="Consultar"
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Label46_1.Y+Label46_1.Height*2
+        ZIndex: =13
+
+    Label46_2 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: |-
+            ="Clave de acceso: " & varReporteRegistrado.KeyAcceso
+        Width: =Rectangle2_1.Width
+        X: =Rectangle2_1.X
+        Y: =Label46_1.Y-Label46_1.Height
+        ZIndex: =14
+

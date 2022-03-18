@@ -1,0 +1,2552 @@
+Screen_Detalle_Reporte_Robo As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =ClearCollect(colBanderas, { _bandGeneral: true, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+        Set(_bandTestimonios, false);
+        ClearCollect(colBandTestDescIndiv, { _bandTesti: false, _bandDescIndiv: false});
+        ClearCollect(colBandDescIndiv, {_bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false});
+        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+        Refresh(Testimonios);
+        ClearCollect(colTestimonios, Filter(Testimonios, Title=varReporteRegistrado.Title));
+        
+        Set(_idConduc, Text(First(Filter(colTestimonios, TipoUsuario="Conductor")).ID));
+        Set(_idAyu1, Text(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).ID));
+        Set(_idAyu2, Text(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).ID));
+        ClearCollect(colDescIndivConduc, Filter(DescIndividuos,Title=_idConduc));
+        ClearCollect(colDescIndivAyu1, Filter(DescIndividuos,Title=_idAyu1));
+        ClearCollect(colDescIndivAyu2, Filter(DescIndividuos,Title=_idAyu2));
+        
+        
+        /*
+        If(varReporteRegistrado.TipoArma<>"Revolver" && varReporteRegistrado.TipoArma<>"Revolver Corto" && varReporteRegistrado.TipoArma<>"Pistola Tipo Escuadra" && varReporteRegistrado.TipoArma<>"Arma Blanca"; ColorValue("#808080"); RGBA(230; 230; 230; 1))
+        */
+        /*
+        If(varReporteRegistrado.TipoArma="Arma de Fuego";
+            ClearCollect(colBandTipoArma; { _armaFuego: true; _armaBlanca: false; _otraArma: false});
+            If(varReporteRegistrado.TipoArma="Arma Blanca";
+                ClearCollect(colBandTipoArma; { _armaFuego: false; _armaBlanca: true; _otraArma: false});
+                If(varReporteRegistrado.TipoArma="Otras Armas";
+                    ClearCollect(colBandTipoArma; { _armaFuego: false; _armaBlanca: false; _otraArma: true})
+                )
+            )
+        );;
+        
+        
+        Refresh(DescIndividuos);;
+        ClearCollect(colDescIndiv; Filter(DescIndividuos; Title=Text(varReporteRegistrado.ID)));;
+        */
+
+    Label11_9 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBandTestDescIndiv)._bandTesti, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false })
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Testimonios"
+        Visible: =_bandTestimonios
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =Label11_4.X
+        Y: =Container24.Y+Container24.Height
+        ZIndex: =1
+
+    Label11_10 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBandTestDescIndiv)._bandDescIndiv, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: true });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: true, _bandTipoArma: false, _bandVehiculo: false })
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Descripción Individuos"
+        Visible: =_bandTestimonios
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, Parent.Width/4)
+        X: =Label11_9.X+Label11_9.Width
+        Y: =Label11_9.Y
+        ZIndex: =2
+
+    Container24_1 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Container24.Height-Image1_6.Height-Label11_9.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Visible: =First(colBandTestDescIndiv)._bandTesti//First(colBanderas)._bandTestimonios
+        Width: =Parent.Width
+        Y: =Label11_9.Y+Label11_9.Height
+        ZIndex: =3
+
+        Container36_1 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =50
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =10
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            LayoutMinHeight: =100
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            Button6_3 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(184, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =If(First(colBanderas)._bandConductor,
+                        UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: true, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                        Set(_bandTestimonios, false);
+                        ,
+                        First(colBanderas)._bandAyudante1,
+                        UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: true, _bandAyudante1: false, _bandAyudante2: false });
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: true });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: true });
+                        Set(_bandTestimonios, true);
+                        ,
+                        UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: true, _bandAyudante2: false });
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: true });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: true });
+                        Set(_bandTestimonios, true);
+                    )
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 13)
+                Text: ="Atrás"
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 160, 100)
+                ZIndex: =1
+
+            Button3_9 As button:
+                Fill: =RGBA(54, 176, 75, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =If(
+                        First(colBandTestDescIndiv)._bandTesti,
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: true });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: true, _bandTipoArma: false, _bandVehiculo: false });
+                    );
+                    
+                    /*
+                    If(First(colBanderas)._bandConductor;
+                    
+                        UpdateIf(colBanderas; true; { _bandGeneral: false; _bandDetalles: false; _bandConductor: false; _bandAyudante1: true; _bandAyudante2: false });
+                        First(colBanderas)._bandAyudante1;
+                        UpdateIf(colBanderas; true; { _bandGeneral: false; _bandDetalles: false; _bandConductor: false; _bandAyudante1: false; _bandAyudante2: true })
+                    );;
+                    
+                    UpdateIf(colBandTestDescIndiv; true; { _bandTesti: true; _bandDescIndiv: false });;
+                    */
+                    Set(_bandTestimonios, true);
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Text: ="Siguiente"
+                ZIndex: =2
+
+        Label36_2 As label:
+            AlignInContainer: =AlignInContainer.Stretch
+            FontWeight: =FontWeight.Bold
+            Text: |-
+                =If(First(colBanderas)._bandConductor, 
+                    "Conductor",
+                    First(colBanderas)._bandAyudante1,
+                    "Ayudante 1",
+                    "Ayudante 2"
+                )
+            ZIndex: =2
+
+        Container25_2 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 300)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =3
+
+            Container26_6 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label33_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre"
+                    ZIndex: =1
+
+                TextInput13_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).Nombre,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).Nombre,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).Nombre
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container26_7 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label34_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nomina"
+                    ZIndex: =1
+
+                TextInput14_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).Nomina,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).Nomina,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).Nomina
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container26_8 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =3
+
+                Label35_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Firma"
+                    ZIndex: =1
+
+                Image8_3 As image:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    Height: =50
+                    Image: =BotónFirmaAceptada
+                    OnSelect: =Set(_bandFirmaTesti, true);//Reset(PenInputFirma);;
+                    ZIndex: =2
+
+        Container28_2 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: |
+                =150
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            ZIndex: =4
+
+            Label37_2 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                FontWeight: =FontWeight.Semibold
+                Text: ="Versión de los echos"
+                ZIndex: =1
+
+            TextInput15_2 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =If(First(colBanderas)._bandConductor, 
+                        First(Filter(colTestimonios, TipoUsuario="Conductor")).VersionEchos,
+                        First(colBanderas)._bandAyudante1,
+                        First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).VersionEchos,
+                        First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).VersionEchos
+                    )
+                DisplayMode: =DisplayMode.View
+                Height: =100
+                Mode: =TextMode.MultiLine
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                ZIndex: =2
+
+        Container25_5 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, 300)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =9
+
+            Container28_7 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: |
+                    =150
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =0
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                PaddingRight: =5
+                Width: =0
+                ZIndex: =1
+
+                Label37_7 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Coordenadas"
+                    ZIndex: =1
+
+                TextInput15_5 As text:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).Coordenadas,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).Coordenadas,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).Coordenadas
+                        )
+                    DisplayMode: =DisplayMode.View
+                    Height: =100
+                    Mode: =TextMode.MultiLine
+                    Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                    ZIndex: =2
+
+            Container26_15 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =150
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =3
+
+                Label35_5 As label:
+                    Align: =Align.Center
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Croquis"
+                    ZIndex: =1
+
+                Image8_7 As image:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    Height: =50
+                    Image: =BotónFirmaAceptada
+                    OnSelect: =Set(_bandCroquis, true);//Reset(PenInputCroquis);;
+                    ZIndex: =2
+
+    Label11_8 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBanderas)._bandAyudante2, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: true });
+            UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+            Set(_bandTestimonios, true);
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Ayudante 2"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =Label11_7.X+Label11_7.Width
+        Y: =Label11_4.Y
+        ZIndex: =8
+
+    Image1_6 As image:
+        Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 100)
+        Image: =EncabezadoPantallaCel1
+        ImagePosition: =ImagePosition.Fill
+        Width: =Parent.Width-Image7_12.Width*2
+        X: =Parent.Width/2-Image1_6.Width/2
+        ZIndex: =9
+
+    Button1_4 As button:
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(235, 38, 44, 1)
+        Height: =50
+        Size: =If(Screen_Index_Reporte_Robo.Size > 2, 15, 10)
+        Text: ="Registro reporte de robo y asalto"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/3+50, Parent.Width/2+50) 
+        X: =Parent.Width/2-Self.Width/2
+        ZIndex: =10
+
+    Label10_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Text: |-
+            ="Clave de acceso: " & varReporteRegistrado.KeyAcceso
+        Width: =Image1_6.Width
+        X: =Image1_6.X
+        Y: =Image1_6.Y+Image1_6.Height-Self.Height
+        ZIndex: =11
+
+    Label11_4 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBanderas)._bandGeneral, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBanderas, true, { _bandGeneral: true, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+            UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+            Set(_bandTestimonios, false);
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="General"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =0//Image1_6.X
+        Y: =Image1_6.Y+Image1_6.Height
+        ZIndex: =12
+
+    Label11_5 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBanderas)._bandDetalles, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: true, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+            UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+            Set(_bandTestimonios, false);
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Detalles"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =Label11_4.X+Label11_4.Width
+        Y: =Label11_4.Y
+        ZIndex: =13
+
+    Label11_6 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBanderas)._bandConductor, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: true, _bandAyudante1: false, _bandAyudante2: false });
+            UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+            Set(_bandTestimonios, true);
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Conductor"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =Label11_5.X+Label11_5.Width
+        Y: =Label11_4.Y
+        ZIndex: =14
+
+    Label11_7 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBanderas)._bandAyudante1, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        OnSelect: |-
+            =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: true, _bandAyudante2: false });
+            UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+            UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+            Set(_bandTestimonios, true);
+        Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+        Text: ="Ayudante 1"
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+        X: =Label11_6.X+Label11_6.Width
+        Y: =Label11_4.Y
+        ZIndex: =15
+
+    Container3_1 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Container24.Height-Image1_6.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        PaddingTop: =5
+        Visible: =First(colBanderas)._bandGeneral
+        Width: =Parent.Width
+        X: =Label11_4.X
+        Y: =Container24.Y+Container24.Height
+        ZIndex: =16
+
+        Button3_3 As button:
+            AlignInContainer: =AlignInContainer.End
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |+
+                =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: true, _bandTestimonios: false, _bandDEscripIndiv: false })
+                
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Siguiente"
+            ZIndex: =1
+
+        Container4_1 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 400)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =2
+
+            Container10_4 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =1
+
+                Label16_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Fecha y Hora del reporte"
+                    Width: =0
+                    ZIndex: =1
+
+                Label19_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    Text: =varReporteRegistrado.FechaReporte
+                    Width: =0
+                    ZIndex: =2
+
+            Container10_5 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label20_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Fecha del robo"
+                    ZIndex: =1
+
+                DatePicker1_1 As datepicker:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    DefaultDate: =varReporteRegistrado.Fecha
+                    DisplayMode: =DisplayMode.View
+                    IconBackground: |-
+                        =ColorValue("#B80000")
+                    ZIndex: =2
+
+            Container10_6 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                ZIndex: =3
+
+                Label23_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Hora del robo"
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                TextInput1 As text:
+                    Default: =varReporteRegistrado.Hora
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container10_7 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =4
+
+                Label23_3 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No Folio Central México"
+                    ZIndex: =1
+
+                TextInput12_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoFolioCentral
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_8 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, 250)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =3
+
+            Container17_2 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =150
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label25_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Dirección exacta del robo"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput5_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.DireccionExacta
+                    DisplayMode: =DisplayMode.View
+                    Height: =80
+                    Mode: =TextMode.MultiLine
+                    Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width-20, Parent.Width-10)
+                    ZIndex: =2
+
+            Container17_3 As groupContainer.verticalAutoLayoutContainer:
+                Height: =120
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label25_3 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Unidad operativa"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput5_3 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.UnidadOperativa
+                    DisplayMode: =DisplayMode.View
+                    Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                    ZIndex: =2
+
+        Container18_9 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 300)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =4
+
+            Container19_15 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_7 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Entre calles"
+                    ZIndex: =1
+
+                TextInput6_7 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.EntreCalles
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_16 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_6 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Colonia"
+                    ZIndex: =1
+
+                TextInput7_6 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.Colonia
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_17 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =3
+
+                Label28_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Municipio"
+                    ZIndex: =1
+
+                TextInput8_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.Municipio
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_10 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 300)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =5
+
+            Container19_18 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_8 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Ruta"
+                    ZIndex: =1
+
+                TextInput6_8 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoRuta
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_19 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_7 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Economico"
+                    ZIndex: =1
+
+                TextInput7_7 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoEconomico
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_20 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =3
+
+                Label28_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Placas"
+                    ZIndex: =1
+
+                TextInput8_3 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.PlacasRuta
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_11 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =6
+
+            Container19_21 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_9 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Monto Robado"
+                    ZIndex: =1
+
+                TextInput6_9 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.MontoRobado
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_22 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_8 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Producto"
+                    ZIndex: =1
+
+                TextInput7_8 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.Producto
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_12 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =7
+
+            Container19_23 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_10 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre conductor"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput6_10 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NombreConductor
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_24 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_9 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Empleado"
+                    ZIndex: =1
+
+                TextInput7_9 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoEmpleadoConductor
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_13 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =8
+
+            Container19_25 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_11 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre ayudante 1"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput6_11 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NombreAyudante1
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_26 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_10 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Empleado"
+                    ZIndex: =1
+
+                TextInput7_10 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoEmpleadoAyudante1
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_14 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =9
+
+            Container19_27 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_12 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre ayudante 2"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput6_12 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NombreAyudante2
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container19_28 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label27_11 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Empleado"
+                    ZIndex: =1
+
+                TextInput7_11 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NoEmpleadoAyudante2
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container18_15 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =100
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =10
+
+            Container19_29 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label26_13 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre último cliente"
+                    Width: =200
+                    ZIndex: =1
+
+                TextInput6_13 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NombreUltimoCliente
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+    Container20_1 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Container24.Height-Image1_6.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Visible: =First(colBanderas)._bandDetalles
+        Width: =Parent.Width
+        X: =Label11_4.X
+        Y: =Container24.Y+Container24.Height
+        ZIndex: =17
+
+        Container37 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =50
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =10
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            LayoutMinHeight: =100
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            Button3_4 As button:
+                Fill: =RGBA(184, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBanderas, true, { _bandGeneral: true, _bandDetalles: false, _bandTestimonios: false, _bandDEscripIndiv: false })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Text: ="Atrás"
+                ZIndex: =1
+
+            Button3_8 As button:
+                Fill: =RGBA(54, 176, 75, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: true, _bandAyudante1: false, _bandAyudante2: false });
+                    UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                    Set(_bandTestimonios, true);
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Text: ="Siguiente"
+                ZIndex: =2
+
+        Container21_1 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, Radio1_1.Selected.Value="SI", 300, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =2
+
+            Container22_3 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                FillPortions: =0
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =400
+                ZIndex: =1
+
+                Label29_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Asaltantes"
+                    ZIndex: =1
+
+                TextInput9_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.CantidadAsaltantes
+                    DisplayMode: =DisplayMode.View
+                    Format: =TextFormat.Number
+                    ZIndex: =2
+
+            Container22_5 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                FillPortions: =0
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =200
+                ZIndex: =3
+
+                Label31_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="¿Hay lesionados?"
+                    ZIndex: =1
+
+                Radio1_1 As radio:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.HayLesionados
+                    DisplayMode: =DisplayMode.View
+                    Height: =60
+                    Items: =["SI", "NO"]
+                    Layout: =Layout.Horizontal
+                    RadioBorderColor: =RGBA(0, 0, 0, 1)
+                    Width: =200
+                    ZIndex: =2
+
+            Container22_4 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                FillPortions: =0
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Visible: =If(Radio1_1.Selected.Value="SI", true, false)
+                Width: =400
+                ZIndex: =4
+
+                Label29_3 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="No. Lesionados"
+                    ZIndex: =1
+
+                TextInput9_3 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.CantidadLesionados
+                    DisplayMode: =DisplayMode.View
+                    Format: =TextFormat.Number
+                    ZIndex: =2
+
+        Container23_3 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =150
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            ZIndex: =3
+
+            Label32_3 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                FontWeight: =FontWeight.Semibold
+                Text: ="¿Qué y cómo ocurrió?"
+                ZIndex: =1
+
+            TextInput11_3 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Default: =varReporteRegistrado.QueYComoOcurrio
+                DisplayMode: =DisplayMode.View
+                Height: =100
+                Mode: =TextMode.MultiLine
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                ZIndex: =2
+
+        Container23_4 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =150
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            ZIndex: =4
+
+            Label32_4 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                FontWeight: =FontWeight.Semibold
+                Text: ="¿Qué hizo el vendedor y a quien reporto el robo?"
+                ZIndex: =1
+
+            TextInput11_4 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Default: =varReporteRegistrado.QueHizoYaQuienSeReporto
+                DisplayMode: =DisplayMode.View
+                Height: =100
+                Mode: =TextMode.MultiLine
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                ZIndex: =2
+
+        Container23_5 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =150
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            ZIndex: =5
+
+            Label32_5 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                FontWeight: =FontWeight.Semibold
+                Text: ="Conclusiones del evento"
+                ZIndex: =1
+
+            TextInput11_5 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Default: =varReporteRegistrado.Conclusiones
+                DisplayMode: =DisplayMode.View
+                Height: =100
+                Mode: =TextMode.MultiLine
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                ZIndex: =2
+
+        Container21_3 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Registro_Reporte_Robo.Size > 2, 100, 200)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =0
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =6
+
+            Container22_8 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                FillPortions: =0
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =If(Screen_Registro_Reporte_Robo.Size > 2, Container21_3.Width/2, Container21_3.Width)
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =If(Screen_Registro_Reporte_Robo.Size > 2, Container21_3.Width/2, Container21_3.Width)
+                ZIndex: =1
+
+                Label29_5 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Nombre del personal de protección"
+                    ZIndex: =1
+
+                TextInput9_5 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =varReporteRegistrado.NombreProteccion
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container22_9 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                FillPortions: =0
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =If(Screen_Registro_Reporte_Robo.Size > 2, Container21_3.Width/2, Container21_3.Width)
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =If(Screen_Registro_Reporte_Robo.Size > 2, Container21_3.Width/2, Container21_3.Width)
+                ZIndex: =3
+
+                Label31_3 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Firma del personal de protección"
+                    ZIndex: =1
+
+                Image8_8 As image:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    Height: =50
+                    Image: =BotónFirmaAceptada
+                    OnSelect: =Set(_bandFirma, true);
+                    ZIndex: =2
+
+    Group6_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =18
+
+        Rectangle1_2 As rectangle:
+            Fill: =RGBA(237, 125, 49, 0.57)
+            Height: =Parent.Height
+            Visible: =_bandFirma Or _bandFirmaTesti Or _bandCroquis
+            Width: =Parent.Width
+            ZIndex: =18
+
+        Label4_5 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =90
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 30, 15)
+            Text: =If(_bandCroquis, "Croquis", "Firma")
+            Visible: =_bandFirma Or _bandFirmaTesti Or _bandCroquis
+            Width: =Parent.Width
+            Y: =Image17.Y-Label4_5.Height
+            ZIndex: =19
+
+        Image6_4 As image:
+            Height: =50
+            Image: =BotónAceptar
+            OnSelect: =Set(_bandFirma, false);Set(_bandFirmaTesti, false);Set(_bandCroquis, false);
+            Visible: =_bandFirma Or _bandFirmaTesti Or _bandCroquis
+            Width: =50
+            X: =Image17.X+Image17.Width-Image6_4.Width-20
+            Y: =Image17.Y+Image17.Height+10
+            ZIndex: =20
+
+    Group9_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =25
+
+        Fondo_1 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.76)
+            Height: =Parent.Height
+            Visible: =_popupAddDescIndiv
+            Width: =Parent.Width
+            ZIndex: =21
+
+        Label5_4 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 20, 15)
+            Text: =If(_bandEditHerrEquip, "Edita al individuo", "Agrega un nuevo individuo")
+            Visible: =_popupAddDescIndiv
+            Width: =Parent.Width
+            ZIndex: =22
+
+        Icon7_1 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Icon: =Icon.Cancel
+            OnSelect: =Set(_popupAddDescIndiv, false);
+            Visible: =_popupAddDescIndiv
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            X: =Parent.Width-Self.Width
+            ZIndex: =23
+
+    Image17 As image:
+        Height: =230
+        Image: =Substitute(varReporteRegistrado.FirmaProteccion2,Char(34),"")
+        Visible: =_bandFirma
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Parent.Height/2-Self.Height/2
+        ZIndex: =29
+
+    Image17_1 As image:
+        Height: =230
+        Image: =//Substitute(varReporteRegistrado.FirmaAyudante2;Char(34);"")
+        Visible: =_bandFirma2
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Parent.Height/2-Self.Height/2
+        ZIndex: =30
+
+    Group12_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =33
+
+        Rectangle3_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.76)
+            Height: =Parent.Height
+            Visible: =_bandRegisAcceso
+            Width: =Parent.Width
+            ZIndex: =24
+
+        Rectangle4_2 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            Visible: =_bandRegisAcceso
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/3, Parent.Width-20)
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Parent.Height/2-Self.Height/2
+            ZIndex: =25
+
+        Label9_2 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Text: ="¿Estás seguro de registrar esta información?"
+            Visible: =_bandRegisAcceso
+            Width: =Rectangle4_2.Width
+            X: =Rectangle4_2.X
+            Y: =Rectangle4_2.Y
+            ZIndex: =26
+
+        Button7_4 As button:
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =/*
+                Set(varReporteRegistrado; Patch(ReporteRobos; Defaults(ReporteRobos); {
+                    HoraReporte: Text(Now(); "dd-mm-yyyy hh:mm");
+                    FechaRobo: Text(DatePicker1.SelectedDate; "dd-mm-yyyy");
+                    HoraRobo: TextInput3.Text & ":" & TextInput4.Text;
+                    NoFolioCentral: TextInput12.Text;
+                    DireccionExacta: TextInput5.Text;
+                    UnidadOperativa: TextInput5_1.Text;
+                    EntreCalles: TextInput6.Text;
+                    Colonia: TextInput7.Text;
+                    Municipio: TextInput8.Text;
+                    NoRuta: TextInput6_1.Text;
+                    NoEconomico: TextInput7_1.Text;
+                    Placas: TextInput8_1.Text;
+                    MontoRobado: TextInput6_2.Text;
+                    Producto: TextInput7_2.Text;
+                    NombreConductor:TextInput6_3.Text;
+                    NoEmpleadoConductor: TextInput7_3.Text;
+                    NombreAyudante1: TextInput6_5.Text;
+                    NoEmpleadoAyudante1: TextInput7_4.Text;
+                    NombreAyudante2: TextInput6_6.Text;
+                    NoEmpleadoAyudante2: TextInput7_5.Text;
+                    NombreUltimoCliente: TextInput6_4.Text;
+                    CantidadAsaltantes: Value(TextInput9.Text);
+                    HayLesionados: Radio1.Selected.Value;
+                    CantidadLesionados: If(Radio1.Selected.Value="NO"; 0; Value(TextInput9_1.Text));
+                    QueYComoOcurrio: TextInput11.Text;
+                    QueHizoYaQuienSeReporto: TextInput11_1.Text;
+                    Conclusiones: TextInput11_2.Text;
+                    NominaAyudante1: TextInput14.Text;
+                    FirmaAyudante1: JSON(PenInput1.Image;JSONFormat.IgnoreBinaryData);
+                    VersionAyudante1: TextInput15.Text;
+                    NominaAyudante2: TextInput14_1.Text;
+                    FirmaAyudante2: JSON(PenInput1_1.Image;JSONFormat.IgnoreBinaryData);
+                    VersionAyudante2: TextInput15_1.Text;
+                    TipoArma: If(_tipoArma=""; TextInput1.Text; _tipoArma);
+                    PlacasVehiculoAsaltantes: TextInput2.Text;
+                    ColorVehiculoAsaltantes: TextInput16.Text;
+                    MarcaVehiculoAsaltantes: TextInput17.Text;
+                    DescripcionVehiculoAsaltantes: TextInput18.Text;
+                    CalcamoniasVehiculoAsaltantes: TextInput2_1.Text;
+                    LlantasVehiculoAsaltantes: TextInput16_1.Text;
+                    DireccionVehiculoAsaltantes: TextInput17_1.Text;
+                    OcupantesVehiculoAsaltantes: TextInput17_2.Text
+                }));;
+                UpdateIf(ReporteRobos; ID=varReporteRegistrado.ID; { Title: "F-"&varReporteRegistrado.ID});;
+                Notify("ya se armó";NotificationType.Success);;
+                */
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Registrar"
+            Visible: =_bandRegisAcceso
+            X: =Parent.Width/2-Self.Width/2
+            Y: =(Rectangle4_2.Y+Rectangle4_2.Height/2)-Self.Height/2
+            ZIndex: =27
+
+        Button7_5 As button:
+            Fill: =RGBA(184, 0, 0, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(_bandRegisAcceso, false);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Cancelar"
+            Visible: =_bandRegisAcceso
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Button7_4.Y+Button7_4.Height+20
+            ZIndex: =28
+
+    Image17_2 As image:
+        Height: =230
+        Image: |-
+            =//Substitute(varReporteRegistrado.FirmaProteccion2;Char(34);"")
+            If(First(colBanderas)._bandConductor, 
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Conductor")).Firma,Char(34),""),
+                First(colBanderas)._bandAyudante1,
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).Firma,Char(34),""),
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).Firma,Char(34),"")
+            )
+        Visible: =_bandFirmaTesti
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Parent.Height/2-Self.Height/2
+        ZIndex: =34
+
+    Image17_3 As image:
+        Height: =230
+        Image: |-
+            =//Substitute(varReporteRegistrado.FirmaProteccion2;Char(34);"")
+            If(First(colBanderas)._bandConductor, 
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Conductor")).Croquis,Char(34),""),
+                First(colBanderas)._bandAyudante1,
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).Croquis,Char(34),""),
+                Substitute(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).Croquis,Char(34),"")
+            )
+        Visible: =_bandCroquis
+        Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Parent.Height/2-Self.Height/2
+        ZIndex: =35
+
+    Container29 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Label11_4.Height-Label11_9.Height-Label38_3.Height-Image1_6.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Visible: =First(colBandDescIndiv)._bandDescIndiv
+        Width: =Parent.Width
+        X: =Label38_3.X
+        Y: =Label38_3.Y+Label38_3.Height
+        ZIndex: =36
+
+        Container34 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =50
+            LayoutGap: =10
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            Icon1_23 As icon.Add:
+                AlignInContainer: =AlignInContainer.Start
+                Color: =RGBA(0, 0, 0, 0)
+                FillPortions: =1
+                Height: =50
+                Icon: =Icon.Add
+                OnSelect: |-
+                    =/*
+                    If( CountRows(colDescIndiv) < Value(varRepRoboSelect.CantidadAsaltantes); Set(_popupAddDescIndiv; true); Notify("No puedes agregar más de " & varRepRoboSelect.CantidadAsaltantes & ", para agregar más primero modifica el número de asaltantes en DETALLES"))
+                    
+                    */
+                Width: =50
+                X: |
+                    =0
+                ZIndex: =2
+
+            Button6 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(184, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                    UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 13)
+                Text: ="Atrás"
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 160, 100)
+                ZIndex: =3
+
+            Button6_10 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(54, 176, 75, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: true, _bandVehiculo: false })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 13)
+                Text: ="Siguiente"
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 160, 100)
+                ZIndex: =4
+
+        "Gallery5 As gallery.'BrowseLayout_Horizontal_TwoTextOneImageVariant_ver4.0'":
+            Fill: =RGBA(237, 237, 237, 1)
+            Items: |-
+                =If(First(colBanderas)._bandConductor, 
+                    colDescIndivConduc,
+                    First(colBanderas)._bandAyudante1,
+                    colDescIndivAyu1,
+                    colDescIndivAyu2
+                )
+            LayoutMinHeight: =600
+            LayoutMinWidth: =0
+            TemplatePadding: =0
+            TemplateSize: =Min(440, Self.Height - 40)
+            ZIndex: =3
+
+            Label39_23 As label:
+                OnSelect: =Select(Parent)
+                Text: =ThisItem.CamisaPlayera
+                Width: =202
+                X: =Label39_10.X+Label39_10.Width
+                Y: =Label39_10.Y
+                ZIndex: =24
+
+            Group5_2 As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =40
+                ZIndex: =24
+
+                Label39 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Sexo:"
+                    Width: =202
+                    Y: =46
+                    ZIndex: =1
+
+                Label39_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Estatura Aprox:"
+                    Width: =202
+                    Y: =84
+                    ZIndex: =2
+
+                Label39_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Edad Aprox:"
+                    Width: =202
+                    Y: =122
+                    ZIndex: =3
+
+                Label39_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Señas Particulares:"
+                    Width: =202
+                    Y: =160
+                    ZIndex: =4
+
+                Label39_4 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Complexión:"
+                    Width: =202
+                    Y: =198
+                    ZIndex: =5
+
+                Label39_5 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Color Corte de Cabello:"
+                    Width: =202
+                    Y: =236
+                    ZIndex: =6
+
+                Label39_6 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Tipo de Nariz:"
+                    Width: =202
+                    Y: =274
+                    ZIndex: =7
+
+                Label39_7 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Color de Ojos:"
+                    Width: =202
+                    Y: =312
+                    ZIndex: =8
+
+                Label39_8 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Barba o Bigote:"
+                    Width: =202
+                    Y: =350
+                    ZIndex: =9
+
+                Label39_9 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Saco o Chamarra:"
+                    Width: =202
+                    Y: =388
+                    ZIndex: =10
+
+                Label39_10 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Camisa o Playera:"
+                    Width: =202
+                    Y: =426
+                    ZIndex: =11
+
+                Label39_11 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: |-
+                        ="Pantalon:"
+                    Width: =202
+                    Y: =464
+                    ZIndex: =12
+
+                Label39_22 As label:
+                    FontWeight: =FontWeight.Semibold
+                    OnSelect: =Select(Parent)
+                    Text: ="Zapatos"
+                    Width: =202
+                    Y: =503
+                    ZIndex: =19
+
+            Group11_1 As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =40
+                ZIndex: =24
+
+                Label39_12 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.Sexo
+                    Width: =202
+                    X: =Label39.X+Label39.Width
+                    Y: =Label39.Y
+                    ZIndex: =13
+
+                Label39_13 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.EstaturaAprox
+                    Width: =202
+                    X: =Label39_1.X+Label39_1.Width
+                    Y: =Label39_1.Y
+                    ZIndex: =14
+
+                Label39_14 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.EdadAprox
+                    Width: =202
+                    X: =Label39_2.X+Label39_2.Width
+                    Y: =Label39_2.Y
+                    ZIndex: =15
+
+                Label39_15 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.SenasPartic
+                    Width: =202
+                    X: =Label39_3.X+Label39_3.Width
+                    Y: =Label39_3.Y
+                    ZIndex: =16
+
+                Label39_16 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.Complexion
+                    Width: =202
+                    X: =Label39_4.X+Label39_4.Width
+                    Y: =Label39_4.Y
+                    ZIndex: =17
+
+                Label39_17 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.ColorCorteCab
+                    Width: =202
+                    X: =Label39_5.X+Label39_5.Width
+                    Y: =Label39_5.Y
+                    ZIndex: =18
+
+                Label39_18 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.TipoNariz
+                    Width: =202
+                    X: =Label39_6.X+Label39_6.Width
+                    Y: =Label39_6.Y
+                    ZIndex: =20
+
+                Label39_19 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.ColorOjos
+                    Width: =202
+                    X: =Label39_7.X+Label39_7.Width
+                    Y: =Label39_7.Y
+                    ZIndex: =21
+
+                Label39_20 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.BarbaBigote
+                    Width: =202
+                    X: =Label39_8.X+Label39_8.Width
+                    Y: =Label39_8.Y
+                    ZIndex: =22
+
+                Label39_21 As label:
+                    OnSelect: =Select(Parent)
+                    Text: =ThisItem.SacoChamarra
+                    Width: =202
+                    X: =Label39_9.X+Label39_9.Width
+                    Y: =Label39_9.Y
+                    ZIndex: =23
+
+            Label39_24 As label:
+                OnSelect: =Select(Parent)
+                Text: =ThisItem.Pantalon
+                Width: =202
+                X: =Label39_11.X+Label39_11.Width
+                Y: =Label39_11.Y
+                ZIndex: =25
+
+            Label39_25 As label:
+                OnSelect: =Select(Parent)
+                Text: =ThisItem.Zapatos
+                Width: =202
+                X: =Label39_22.X+Label39_22.Width
+                Y: =Label39_22.Y
+                ZIndex: =26
+
+            Label21 As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderThickness: =1
+                Color: =RGBA(255, 255, 255, 1)
+                Fill: =RGBA(0, 0, 0, 1)
+                FontWeight: =FontWeight.Semibold
+                OnSelect: =Select(Parent)
+                Text: ="Individuo"
+                Width: =Parent.TemplateWidth
+                ZIndex: =27
+
+    Container12 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Label38_3.Height-Label11_9.Height-Image1_6.Height-Label11_4.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        PaddingLeft: =5
+        Visible: =First(colBandDescIndiv)._bandTipoArma
+        Width: =Parent.Width
+        X: =Label38_3.X
+        Y: =Label38_3.Y+Label38_3.Height
+        ZIndex: =37
+
+        Container34_1 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =50
+            LayoutGap: =10
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            Label40 As label:
+                Align: =Align.Center
+                AlignInContainer: =AlignInContainer.Stretch
+                FillPortions: =1
+                FontWeight: =FontWeight.Bold
+                LayoutMinWidth: =0
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 10)
+                Text: ="Selecciona un tipo de arma"
+                ZIndex: =1
+
+            Button6_1 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(184, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: true, _bandTipoArma: false, _bandVehiculo: false })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 10)
+                Text: ="Atrás"
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 160, 100)
+                ZIndex: =2
+
+            Button6_9 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(54, 176, 75, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: true })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 10)
+                Text: ="Siguiente"
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 160, 100)
+                ZIndex: =3
+
+        Container13 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0//If(First(colBandTipoArma)._otro; 0; 1)
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 250)
+            LayoutGap: =40
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            LayoutWrap: =true
+            ZIndex: =3
+
+            Image11 As image:
+                Fill: |-
+                    =If(First(colBanderas)._bandConductor,
+                        Switch(First(Filter(colTestimonios, TipoUsuario="Conductor")).TipoArma,
+                            "Arma de Fuego",
+                            ColorValue("#808080"),
+                            RGBA(230, 230, 230, 1)
+                        ),
+                        If(First(colBanderas)._bandAyudante1,
+                            Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).TipoArma,
+                                "Arma de Fuego",
+                                ColorValue("#808080"),
+                                RGBA(230, 230, 230, 1)
+                            ),
+                            If(First(colBanderas)._bandAyudante2,
+                                Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).TipoArma,
+                                    "Arma de Fuego",
+                                    ColorValue("#808080"),
+                                    RGBA(230, 230, 230, 1)
+                                )        
+                            )  
+                        )
+                        
+                    )
+                    
+                    /*
+                    If(First(colBanderas)._bandConductor; 
+                        First(Filter(colTestimonios; TipoUsuario="Conductor")).DescArma";
+                        First(colBanderas)._bandAyudante1;
+                        First(Filter(colTestimonios; TipoUsuario="Ayudante 1")).DescArma;
+                        First(Filter(colTestimonios; TipoUsuario="Ayudante 2")).DescArma
+                    )
+                    */
+                    //If(First(colBandTipoArma)._armaFuego; ColorValue("#808080"); RGBA(230; 230; 230; 1))
+                Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                Image: =IconoArmaDeFuego
+                OnSelect: |-
+                    =Set(_tipoArma, "Arma de Fuego");
+                    //UpdateIf(colBandTipoArma; true; {  _armaFuego: true; _armaBlanca: false; _otro: false})
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                ZIndex: =1
+
+            Image12 As image:
+                Fill: |-
+                    =If(First(colBanderas)._bandConductor,
+                        Switch(First(Filter(colTestimonios, TipoUsuario="Conductor")).TipoArma,
+                            "Arma Blanca",
+                            ColorValue("#808080"),
+                            RGBA(230, 230, 230, 1)
+                        ),
+                        If(First(colBanderas)._bandAyudante1,
+                            Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).TipoArma,
+                                "Arma Blanca",
+                                ColorValue("#808080"),
+                                RGBA(230, 230, 230, 1)
+                            ),
+                            If(First(colBanderas)._bandAyudante2,
+                                Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).TipoArma,
+                                    "Arma Blanca",
+                                    ColorValue("#808080"),
+                                    RGBA(230, 230, 230, 1)
+                                )        
+                            )  
+                        )
+                        
+                    )
+                Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                Image: =IconoArmaBlanca
+                OnSelect: |-
+                    =Set(_tipoArma, "Arma Blanca");
+                    //UpdateIf(colBandTipoArma; true; { _armaFuego: false; _armaBlanca: true; _otro: false})
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                ZIndex: =2
+
+            Image13 As image:
+                Fill: |-
+                    =If(First(colBanderas)._bandConductor,
+                        Switch(First(Filter(colTestimonios, TipoUsuario="Conductor")).TipoArma,
+                            "Otras Armas",
+                            ColorValue("#808080"),
+                            RGBA(230, 230, 230, 1)
+                        ),
+                        If(First(colBanderas)._bandAyudante1,
+                            Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).TipoArma,
+                                "Otras Armas",
+                                ColorValue("#808080"),
+                                RGBA(230, 230, 230, 1)
+                            ),
+                            If(First(colBanderas)._bandAyudante2,
+                                Switch(First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).TipoArma,
+                                    "Otras Armas",
+                                    ColorValue("#808080"),
+                                    RGBA(230, 230, 230, 1)
+                                )        
+                            )  
+                        )
+                        
+                    )
+                Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                Image: =IconoOtrasArmas
+                OnSelect: |-
+                    =Set(_tipoArma, "Otras Armas");
+                    //UpdateIf(colBandTipoArma; true; { _armaFuego: false; _armaBlanca: false; _otro: true})
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, 100)
+                ZIndex: =3
+
+        Label41 As label:
+            AlignInContainer: =AlignInContainer.Stretch
+            FontWeight: =FontWeight.Bold
+            Text: ="Descripción"
+            Width: =0
+            ZIndex: =4
+
+        TextInput1_2 As text:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Default: |-
+                =If(First(colBanderas)._bandConductor, 
+                    First(Filter(colTestimonios, TipoUsuario="Conductor")).DescArma,
+                    First(colBanderas)._bandAyudante1,
+                    First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).DescArma,
+                    First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).DescArma
+                )
+            DisplayMode: =DisplayMode.View
+            Height: =100
+            Mode: =TextMode.MultiLine
+            Width: =300
+            ZIndex: =5
+
+    Container15 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Label38_3.Height-Label11_9.Height-Label11_4.Height-Image1_6.Height
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Visible: =First(colBandDescIndiv)._bandVehiculo
+        Width: =Parent.Width
+        X: =Label38_3.X
+        Y: =Label38_3.Y+Label38_3.Height
+        ZIndex: =38
+
+        Container34_2 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =50
+            LayoutGap: =10
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            Label40_1 As label:
+                Align: =Align.Center
+                AlignInContainer: =AlignInContainer.Stretch
+                FillPortions: =1
+                FontWeight: =FontWeight.Bold
+                LayoutMinWidth: =0
+                Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 15, 10)
+                Text: =""
+                ZIndex: =1
+
+            Button6_2 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(184, 0, 0, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: true, _bandVehiculo: false })
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Text: ="Atrás"
+                ZIndex: =2
+
+            Button6_8 As button:
+                AlignInContainer: =AlignInContainer.Center
+                Fill: =RGBA(54, 176, 75, 1)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =If(First(colBanderas)._bandConductor,
+                        UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: true, _bandAyudante2: false });
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                        Set(_bandTestimonios, true);
+                        First(colBanderas)._bandAyudante1,
+                        UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: true });
+                        UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                        UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                        Set(_bandTestimonios, true);
+                    )
+                RadiusBottomLeft: =100
+                RadiusBottomRight: =100
+                RadiusTopLeft: =100
+                RadiusTopRight: =100
+                Text: ="Siguiente"
+                Visible: =!First(colBanderas)._bandAyudante2
+                ZIndex: =3
+
+        Container27 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 300)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =2
+
+            Container30 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label42 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Placas"
+                    Width: =0
+                    ZIndex: =1
+
+                TextInput2_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).PlacasVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).PlacasVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).PlacasVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container30_1 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label43 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    LayoutMinWidth: =0
+                    Text: ="Color"
+                    ZIndex: =1
+
+                TextInput16 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).ColorVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).ColorVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).ColorVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container30_2 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =3
+
+                Label44 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    LayoutMinWidth: =0
+                    Text: ="Marca"
+                    ZIndex: =1
+
+                TextInput17 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).MarcaVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).MarcaVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).MarcaVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+        Container33 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =150
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingLeft: =5
+            ZIndex: =3
+
+            Label45 As label:
+                AlignInContainer: =AlignInContainer.Stretch
+                FontWeight: =FontWeight.Semibold
+                Text: ="Descripcion General,  Daños, Adornos, Golpes"
+                ZIndex: =1
+
+            TextInput18 As text:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =If(First(colBanderas)._bandConductor, 
+                        First(Filter(colTestimonios, TipoUsuario="Conductor")).DescripcionVehiculo,
+                        First(colBanderas)._bandAyudante1,
+                        First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).DescripcionVehiculo,
+                        First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).DescripcionVehiculo
+                    )
+                DisplayMode: =DisplayMode.View
+                Height: =100
+                Mode: =TextMode.MultiLine
+                Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, Parent.Width/2, Parent.Width-10)
+                ZIndex: =2
+
+        Container27_1 As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 100, 400)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =4
+
+            Container30_3 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =1
+
+                Label42_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    Text: ="Calcomanias"
+                    Width: =0
+                    ZIndex: =1
+
+                TextInput2_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).CalcamoniasVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).CalcamoniasVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).CalcamoniasVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container30_4 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =2
+
+                Label43_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    LayoutMinWidth: =0
+                    Text: ="Llanta, Copas, Rines"
+                    ZIndex: =1
+
+                TextInput16_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).LlantasVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).LlantasVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).LlantasVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container30_5 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =3
+
+                Label44_1 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    LayoutMinWidth: =0
+                    Text: ="Dirección en que salió"
+                    ZIndex: =1
+
+                TextInput17_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).DireccionVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).DireccionVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).DireccionVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+            Container30_6 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =100
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                ZIndex: =4
+
+                Label44_2 As label:
+                    AlignInContainer: =AlignInContainer.Stretch
+                    FontWeight: =FontWeight.Semibold
+                    LayoutMinWidth: =0
+                    Text: ="Ocupantes del vehículo"
+                    ZIndex: =1
+
+                TextInput17_2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: |-
+                        =If(First(colBanderas)._bandConductor, 
+                            First(Filter(colTestimonios, TipoUsuario="Conductor")).OcupantesVehiculo,
+                            First(colBanderas)._bandAyudante1,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 1")).OcupantesVehiculo,
+                            First(Filter(colTestimonios, TipoUsuario="Ayudante 2")).OcupantesVehiculo
+                        )
+                    DisplayMode: =DisplayMode.View
+                    ZIndex: =2
+
+    Container24 As groupContainer.horizontalAutoLayoutContainer:
+        Height: =40
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowX: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        Y: =Label11_4.Y
+        ZIndex: =39
+
+        Label11_12 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBanderas)._bandGeneral, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBanderas, true, { _bandGeneral: true, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+                UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+                UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                Set(_bandTestimonios, false);
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="General"
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =0//Image1_6.X
+            Y: =Image1_6.Y+Image1_6.Height
+            ZIndex: =2
+
+        Label11_13 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBanderas)._bandDetalles, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: true, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: false });
+                UpdateIf(colBandTestDescIndiv, true, { _bandTesti: false, _bandDescIndiv: false });
+                UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                Set(_bandTestimonios, false);
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Detalles"
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label11_12.X+Label11_12.Width
+            Y: =Label11_12.Y
+            ZIndex: =3
+
+        Label11_14 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBanderas)._bandConductor, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: true, _bandAyudante1: false, _bandAyudante2: false });
+                UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                Set(_bandTestimonios, true);
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Conductor"
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label11_13.X+Label11_13.Width
+            Y: =Label11_12.Y
+            ZIndex: =4
+
+        Label11_15 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBanderas)._bandAyudante1, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: true, _bandAyudante2: false });
+                UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                Set(_bandTestimonios, true);
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Ayudante 1"
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label11_14.X+Label11_14.Width
+            Y: =Label11_12.Y
+            ZIndex: =5
+
+        Label11_16 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBanderas)._bandAyudante2, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBanderas, true, { _bandGeneral: false, _bandDetalles: false, _bandConductor: false, _bandAyudante1: false, _bandAyudante2: true });
+                UpdateIf(colBandTestDescIndiv, true, { _bandTesti: true, _bandDescIndiv: false });
+                UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: false });
+                Set(_bandTestimonios, true);
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Ayudante 2"
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label11_7.X+Label11_7.Width
+            Y: =Label11_4.Y
+            ZIndex: =6
+
+    Group7_7 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =40
+
+        Image7_12 As image:
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2,50, 40)
+            X: =Parent.Width-Self.Width
+            Y: =20
+            ZIndex: =6
+
+        Icon1_13 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_12.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_12.Width
+            X: =Image7_12.X
+            Y: =Image7_12.Y
+            ZIndex: =7
+
+    Group7_8 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =42
+
+        Image7_13 As image:
+            Height: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 50, 40)
+            Y: =20
+            ZIndex: =4
+
+        Icon1_14 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_13.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Historial_Reporte_Robo,ScreenTransition.Cover)
+            Width: =Image7_13.Width
+            X: =Image7_13.X
+            Y: =Image7_13.Y
+            ZIndex: =5
+
+    Group8_2 As group:
+        Height: =5
+        Width: =5
+        X: =80
+        Y: =80
+        ZIndex: =48
+
+        Label38_3 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBandDescIndiv)._bandDescIndiv, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: true, _bandTipoArma: false, _bandVehiculo: false })
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Descripción Individuos"
+            Visible: =_bandTestimonios && First(colBandTestDescIndiv)._bandDescIndiv //First(colBanderas)._bandDEscripIndiv
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 200, Parent.Width/4+Parent.Width/4)
+            X: =Label11_9.X
+            Y: =Label11_9.Y+Label11_9.Height
+            ZIndex: =31
+
+        Label38_4 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBandDescIndiv)._bandTipoArma, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: true, _bandVehiculo: false })
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Tipo de arma"
+            Visible: =_bandTestimonios && First(colBandTestDescIndiv)._bandDescIndiv //First(colBanderas)._bandDEscripIndiv
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label38_3.X+Label38_3.Width
+            Y: =Label38_3.Y
+            ZIndex: =32
+
+        Label38_5 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =If(First(colBandDescIndiv)._bandVehiculo, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+            OnSelect: |-
+                =UpdateIf(colBandDescIndiv, true, { _bandDescIndiv: false, _bandTipoArma: false, _bandVehiculo: true })
+            Size: =If(Screen_Detalle_Reporte_Robo.Size > 2, 13, 10)
+            Text: ="Vehículo"
+            Visible: =_bandTestimonios && First(colBandTestDescIndiv)._bandDescIndiv //First(colBanderas)._bandDEscripIndiv
+            Width: =If(Screen_Detalle_Reporte_Robo.Size > 2, 150, Parent.Width/4)
+            X: =Label38_4.X+Label38_4.Width
+            Y: =Label38_4.Y
+            ZIndex: =33
+

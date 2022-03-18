@@ -1,0 +1,920 @@
+Screen_Registro_Llaves_Seguridad As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =ClearCollect(colBandLlaves, { _bandEntrega: true, _bandRecepcion: false });
+        Refresh(EntregaRecepcionLlaves);
+        ClearCollect(colEntregaRecepcionLlaves, EntregaRecepcionLlaves);
+        ClearCollect(colEntRecLlaves, Filter(colEntregaRecepcionLlaves, Title=varLlavesRegistrado2));
+        Reset(TextInput2);
+        If(varLlaves="1",
+            Reset(txtNombre1);
+            Reset(txtApellidos1);
+            Reset(txtCantLlaves1);
+            Reset(txtNumPlomo1);
+            Reset(PenInput1_2);
+            Reset(txtNombre2);
+            Reset(txtApellidos2);
+            Reset(PenInput1_3);
+            
+        )
+
+    Label30 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBandLlaves)._bandEntrega, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        FontWeight: =FontWeight.Semibold
+        OnSelect: |-
+            =UpdateIf(colBandLlaves, true, { _bandEntrega: true, _bandRecepcion: false });
+        Text: ="ENTREGA"
+        X: =Image1_9.X
+        Y: =Image1_9.Y+Image1_9.Height
+        ZIndex: =1
+
+    Label30_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(First(colBandLlaves)._bandRecepcion, RGBA(184, 0, 0, 1), RGBA(149, 149, 149, 1))
+        FontWeight: =FontWeight.Semibold
+        OnSelect: |-
+            =UpdateIf(colBandLlaves, true, { _bandEntrega: false, _bandRecepcion: true });
+        Text: ="RECEPCIÓN"
+        Visible: =varLlaves="2"
+        X: =Label30.X+Label30.Width
+        Y: =Image1_9.Y+Image1_9.Height
+        ZIndex: =2
+
+    Image1_9 As image:
+        Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 100, 100)
+        Image: =EncabezadoPantallaCel1
+        ImagePosition: =ImagePosition.Fill
+        Width: =Parent.Width/2+Parent.Width/3
+        X: =Parent.Width/2-Image1_9.Width/2
+        ZIndex: =7
+
+    Button1_5 As button:
+        DisplayMode: =DisplayMode.View
+        Fill: =RGBA(235, 38, 44, 1)
+        Height: =55
+        Size: =If(Screen_Index_Reporte_Robo.Size > 2, 15, 10)
+        Text: ="Registron de etrega-recepción de llaves de cajas de seguridad"
+        Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/3+50, Parent.Width/2+50) 
+        X: =Parent.Width/2-Self.Width/2
+        ZIndex: =8
+
+    Container14 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height-Image1_9.Height-Label30.Height-20
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Width: =Parent.Width/2+Parent.Width/3
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Label30.Y+Label30.Height+20
+        ZIndex: =9
+
+        Label10 As label:
+            AlignInContainer: =AlignInContainer.Stretch
+            FontWeight: =FontWeight.Bold
+            LayoutMinWidth: =0
+            Text: =If(First(colBandLlaves)._bandEntrega, "Entrega Liquidaciones", "Entrega Protección Patrimonial")
+            ZIndex: =1
+
+        Container2_1 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 80, 160)
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =2
+
+            Container3_2 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_1.Width
+                ZIndex: =1
+
+                Label8_2 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Nombres"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                txtNombre1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).NombreLiqui, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).NombreProt))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =30
+                    HintText: ="Ingresa tus nombres"
+                    Width: =Label8_2.Width
+                    X: =Label8_2.X
+                    Y: =Label8_2.Y+Label8_2.Height
+                    ZIndex: =2
+
+            Container4_2 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_1.Width
+                ZIndex: =2
+
+                Label8_3 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    Text: ="Apellidos"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2,Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =If(Screen_Index.Size > 2,Label8_2.X+Label8_2.Width, Label8_2.X)
+                    Y: =If(Screen_Index.Size > 2, Label8_2.Y, txtNombre1.Y+Label8_3.Height)
+                    ZIndex: =1
+
+                txtApellidos1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosLiqui, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =30
+                    HintText: ="Ingresa tus apellidos"
+                    Width: =Label8_3.Width
+                    X: =Label8_3.X
+                    Y: =Label8_3.Y+Label8_3.Height
+                    ZIndex: =2
+
+        Container2_2 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 80, 160)
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =3
+
+            Container3_3 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_2.Width
+                ZIndex: =1
+
+                Label8_4 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Cantidad de llaves"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                txtCantLlaves1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Default: =If(varLlaves="1", 0, If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).CantLlaves, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).CantLlaves))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Format: =TextFormat.Number
+                    Height: =30
+                    HintText: ="Ingresa la cantidad de llaves"
+                    Width: =Label8_4.Width
+                    X: =Label8_4.X
+                    Y: =Label8_4.Y+Label8_4.Height
+                    ZIndex: =2
+
+            Container4_4 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_2.Width
+                ZIndex: =2
+
+                Label8_7 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    Text: ="Num. de Plomo"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2,Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =If(Screen_Index.Size > 2,Label8_4.X+Label8_4.Width, Label8_4.X)
+                    Y: =If(Screen_Index.Size > 2, Label8_4.Y, txtCantLlaves1.Y+Label8_7.Height)
+                    ZIndex: =1
+
+                txtNumPlomo1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).NumPlomo, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).NumPlomo))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =30
+                    HintText: ="Ingresa el número de plomo"
+                    Width: =Label8_7.Width
+                    X: =Label8_7.X
+                    Y: =Label8_7.Y+Label8_7.Height
+                    ZIndex: =2
+
+        Container2_4 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =80
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Visible: =If(varLlaves="1", false, If(First(colBandLlaves)._bandEntrega && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).FirmaLiqui), true, First(colBandLlaves)._bandRecepcion && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).FirmaProt), true, false))
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =4
+
+            Container3_4 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                Width: =Container2_4.Width
+                ZIndex: =1
+
+                Image5_8 As image:
+                    FillPortions: =1
+                    Height: =50
+                    Image: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), If(varFirmaLlaves1=PenInput1_2.Image, BotónFirmaAceptada, BotónIngresarFirma), varLlaves="1",If(varFirmaLlaves1=PenInput1_2.Image, BotónFirmaAceptada, BotónIngresarFirma),BotónFirmaAceptada) 
+                    OnSelect: =Reset(PenInput1_2);Set(_bandFirma, true);
+                    ZIndex: =1
+
+        Label10_2 As label:
+            AlignInContainer: =AlignInContainer.Stretch
+            FontWeight: =FontWeight.Bold
+            LayoutMinWidth: =0
+            Text: =If(First(colBandLlaves)._bandEntrega, "Recibe Protección Patrimonial", "Recibe Liquidaciones")
+            ZIndex: =5
+
+        Container2_3 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 80, 160)
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =6
+
+            Container3_5 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_3.Width
+                ZIndex: =1
+
+                Label8_5 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Nombres"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                txtNombre2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).NombreProt, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).NombreLiqui))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =30
+                    HintText: ="Ingresa tus nombres"
+                    Width: =Label8_5.Width
+                    X: =Label8_5.X
+                    Y: =Label8_5.Y+Label8_5.Height
+                    ZIndex: =2
+
+            Container4_3 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_3.Width
+                ZIndex: =2
+
+                Label8_6 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    Text: ="Apellidos"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2,Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =If(Screen_Index.Size > 2,Label8_5.X+Label8_5.Width, Label8_5.X)
+                    Y: =If(Screen_Index.Size > 2, Label8_5.Y, txtNombre2.Y+Label8_6.Height)
+                    ZIndex: =1
+
+                txtApellidos2 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosLiqui))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =30
+                    HintText: ="Ingresa tus apellidos"
+                    Width: =Label8_6.Width
+                    X: =Label8_6.X
+                    Y: =Label8_6.Y+Label8_6.Height
+                    ZIndex: =2
+
+        Container2_6 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =80
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Visible: =If(varLlaves="1", false, If(First(colBandLlaves)._bandEntrega && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).FirmaProt), true, First(colBandLlaves)._bandRecepcion && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).FirmaLiqui), true, false))
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =7
+
+            Container3_7 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =80
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                Width: =Container2_6.Width
+                ZIndex: =1
+
+                Image5_9 As image:
+                    FillPortions: =1
+                    Height: =50
+                    Image: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), If(varFirmaLlaves2=PenInput1_3.Image, BotónFirmaAceptada, BotónIngresarFirma), varLlaves="1",If(varFirmaLlaves2=PenInput1_3.Image, BotónFirmaAceptada, BotónIngresarFirma),BotónFirmaAceptada) 
+                    OnSelect: =Reset(PenInput1_3);Set(_bandFirma2, true);
+                    ZIndex: =1
+
+        Button5 As button:
+            AlignInContainer: =AlignInContainer.Center
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =If(IsBlank(Trim(txtNombre1.Text)) || IsBlank(Trim(txtApellidos1.Text)) || IsBlank(Trim(txtNumPlomo1.Text)) || IsBlank(Trim(txtNombre2.Text)) || IsBlank(Trim(txtApellidos2.Text)),
+                    Notify("Debes de llenar todos los datos del formulario",NotificationType.Error),
+                    //If(varFirmaLlaves1<>PenInput1_2.Image;
+                        //Notify("Debes de ingresar la firma de Liquidaciones";NotificationType.Error);
+                        //If(varFirmaLlaves2<>PenInput1_3.Image;
+                            //Notify("Debes de ingresar la firma de Protección Patrimonial";NotificationType.Error);
+                            If(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).NumPlomo<>txtNumPlomo1.Text && varLlaves="2",
+                                Notify("El número de plomo debe ser igual al que te entregaron",NotificationType.Error),
+                                If(Value(txtCantLlaves1.Text) < 1,
+                                    Notify("La cantidad de llaves debe de ser mayor a 0",NotificationType.Error),
+                                    If(Value(txtCantLlaves1.Text) > First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).CantLlaves && varLlaves="2",
+                                        Notify("No puedes entregar mas llaves de las que te recibiste",NotificationType.Error),
+                                        If(Value(txtCantLlaves1.Text) < First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).CantLlaves && varLlaves="2",
+                                            Reset(PenInput1_2);Set(varFirmaLlaves1, Blank());Set(varFirmaLlaves1Final, Blank());
+                                            Reset(PenInput1_3);Set(varFirmaLlaves2, Blank());Set(varFirmaLlaves2Final, Blank());
+                                            Set(_bandLlavesFaltantes, true),
+                                            //If(First(Filter(colEntRecLlaves; TipoAccion="ENTREGA")).NumPlomo<>txtNumPlomo1.Text && varLlaves="2";
+                                                //Notify("El número de plomo debe ser igual al que te entregaron";NotificationType.Error);
+                                                Set(_bandFirmaLlaves, true);
+                                                Reset(PenInput1_2);Set(varFirmaLlaves1, Blank());Set(varFirmaLlaves1Final, Blank());
+                                                Reset(PenInput1_3);Set(varFirmaLlaves2, Blank());Set(varFirmaLlaves2Final, Blank());
+                                                //Set(_bandLlaves; true);;
+                                            //)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                        //)
+                    //)
+                )
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Registrar"
+            Visible: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), true, varLlaves="1",true,false)
+            Width: =250
+            ZIndex: =8
+
+        Container2_5 As groupContainer.verticalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =150
+            LayoutDirection: =If(Screen_Index.Size > 2,LayoutDirection.Horizontal,LayoutDirection.Vertical)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Visible: =First(colBandLlaves)._bandRecepcion && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).Observaciones)
+            Width: =Parent.Width/2+Parent.Width/3
+            X: =113
+            Y: =256
+            ZIndex: =9
+
+            Container3_6 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =150
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =80
+                LayoutMinWidth: =0
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =5
+                Width: =Container2_5.Width
+                ZIndex: =1
+
+                Label8_10 As label:
+                    FontWeight: =FontWeight.Bold
+                    Height: =30
+                    LayoutMinHeight: =0
+                    Text: ="Observaciones"
+                    Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Image1_9.Width/2-20, Image1_9.Width-20)
+                    X: =Image1_1.X
+                    Y: =Image1_1.Y+Image1_1.Height
+                    ZIndex: =1
+
+                txtNombre2_1 As text:
+                    BorderColor: =RGBA(0, 0, 0, 1)
+                    Clear: =true
+                    Default: =If(varLlaves="1", "", If(First(colBandLlaves)._bandEntrega, First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).Observaciones, First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).Observaciones))
+                    DisplayMode: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), DisplayMode.Edit, varLlaves="1",Edit,View)
+                    Height: =100
+                    HintText: ="Ingresa tus nombres"
+                    Width: =Label8_10.Width
+                    X: =Label8_10.X
+                    Y: =Label8_10.Y+Label8_10.Height
+                    ZIndex: =2
+
+    Group8 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =19
+
+        Rectangle1_4 As rectangle:
+            Fill: =RGBA(237, 125, 49, 0.57)
+            Height: =Parent.Height
+            Visible: =_bandFirma || _bandFirma2
+            Width: =Parent.Width
+            ZIndex: =10
+
+        Label4_10 As label:
+            Align: =Align.Center
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =90
+            Size: =If(Screen_Index.Size > 2, 30, 15)
+            Text: ="Firma en el recuadro blanco"
+            Visible: =_bandFirma || _bandFirma2
+            Width: =Parent.Width
+            Y: =PenInput1_2.Y-Label4_10.Height
+            ZIndex: =11
+
+        PenInput1_2 As inkControl:
+            Fill: =RGBA(255, 255, 255, 1)
+            OnSelect: =Set(varFirmaLlaves1, Self.Image);
+            Reset: =true
+            Visible: =If(varLlaves="1" && _bandFirma, true, First(colBandLlaves)._bandEntrega, _bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-10)
+            X: =Parent.Width/2-PenInput1_2.Width/2
+            Y: =Parent.Height/2-PenInput1_2.Height/2
+            ZIndex: =12
+
+        Image6_10 As image:
+            Height: =50
+            Image: =BotónAceptar
+            OnSelect: |
+                =If(varLlaves="1" && First(colBandLlaves)._bandEntrega,
+                    If(varFirmaLlaves1=PenInput1_2.Image && varFirmaLlaves2=PenInput1_3.Image,
+                        Set(_bandLlaves, true);
+                        Set(_bandFirmaLlaves, false);
+                        Set(varFirmaLlaves1Final, JSON(varFirmaLlaves1,JSONFormat.IncludeBinaryData));
+                        Set(varFirmaLlaves2Final, JSON(varFirmaLlaves2,JSONFormat.IncludeBinaryData));
+                        Set(_bandFirma, false);
+                        Set(_bandFirma2, false),
+                        Set(_bandLlaves, false);
+                        Set(_bandFirma, false);
+                        Set(_bandFirma2, false);
+                        Set(_bandFirmaLlaves, true);
+                        Set(varFirmaLlaves1Final, Blank());
+                        Set(varFirmaLlaves2Final, Blank());
+                    ),
+                    Set(_bandFirma, false);
+                    Set(_bandFirma2, false);
+                );
+                If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).FirmaLiqui),
+                    If(varFirmaLlaves1=PenInput1_2.Image && varFirmaLlaves2=PenInput1_3.Image,
+                        Set(_bandLlaves, true);
+                        Set(_bandFirmaLlaves, false);
+                        Set(varFirmaLlaves1Final, JSON(varFirmaLlaves1,JSONFormat.IncludeBinaryData));
+                        Set(varFirmaLlaves2Final, JSON(varFirmaLlaves2,JSONFormat.IncludeBinaryData));
+                        Set(_bandFirma, false);
+                        Set(_bandFirma2, false),
+                        Set(_bandLlaves, false);
+                        Set(_bandFirma, false);
+                        Set(_bandFirma2, false);
+                        Set(_bandFirmaLlaves, true);
+                        Set(varFirmaLlaves1Final, Blank());
+                        Set(varFirmaLlaves2Final, Blank());
+                    ),
+                    Set(_bandFirma, false);
+                    Set(_bandFirma2, false);
+                )
+            Visible: =_bandFirma || _bandFirma2
+            Width: =50
+            X: =PenInput1_2.X+PenInput1_2.Width-Image6_10.Width*2-20
+            Y: =PenInput1_2.Y+PenInput1_2.Height+10
+            ZIndex: =13
+
+        Image6_9 As image:
+            Height: =50
+            Image: =BotónCancelar
+            OnSelect: =Reset(PenInput1_2);Set(varFirmaLlaves1, Blank());Set(varFirmaLlaves1Final, Blank());Set(_bandFirma, false);Set(_bandFirmaLlaves, true);
+            Visible: =If(varLlaves="1" && _bandFirma, true, First(colBandLlaves)._bandEntrega, _bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+            Width: =50
+            X: =PenInput1_2.X+PenInput1_2.Width-Image6_9.Width
+            Y: =PenInput1_2.Y+PenInput1_2.Height+10
+            ZIndex: =14
+
+        PenInput1_3 As inkControl:
+            Fill: =RGBA(255, 255, 255, 1)
+            OnSelect: =Set(varFirmaLlaves2, Self.Image);
+            Reset: =true
+            Visible: =If(varLlaves="1" && _bandFirma2, true, First(colBandLlaves)._bandEntrega, _bandFirma2 && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma2 && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+            Width: =If(Screen_Index.Size > 2, Parent.Width/2, Parent.Width-10)
+            X: =Parent.Width/2-PenInput1_3.Width/2
+            Y: =Parent.Height/2-PenInput1_3.Height/2
+            ZIndex: =15
+
+        Image6_11 As image:
+            Height: =50
+            Image: =BotónCancelar
+            OnSelect: =Reset(PenInput1_3);Set(varFirmaLlaves2, Blank());Set(varFirmaLlaves2Final, Blank());Set(_bandFirma2, false);Set(_bandFirmaLlaves, true);
+            Visible: =If(varLlaves="1" && _bandFirma2, true, First(colBandLlaves)._bandEntrega, _bandFirma2 && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma2 && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+            Width: =50
+            X: =PenInput1_2.X+PenInput1_2.Width-Image6_11.Width
+            Y: =PenInput1_2.Y+PenInput1_2.Height+10
+            ZIndex: =16
+
+    Label22 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Bold
+        Text: =txtNumPlomo1.Text
+        VerticalAlign: =VerticalAlign.Top
+        Visible: =_bandLlaves
+        Width: =Label9_4.Width
+        X: =Label9_4.X
+        Y: =Label9_4.Y+Label9_4.Height
+        ZIndex: =22
+
+    Image10 As image:
+        Height: =230
+        Image: =If(First(colBandLlaves)._bandEntrega, Substitute(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).FirmaLiqui,Char(34),""), Substitute(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).FirmaProt,Char(34),""))
+        Visible: =If(varLlaves="1" && _bandFirma, false, First(colBandLlaves)._bandEntrega, _bandFirma && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+        Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-PenInput1_2.Width/2
+        Y: =Parent.Height/2-PenInput1_2.Height/2
+        ZIndex: =23
+
+    Image10_1 As image:
+        Height: =230
+        Image: =If(First(colBandLlaves)._bandEntrega, Substitute(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).FirmaProt,Char(34),""), Substitute(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).FirmaLiqui,Char(34),""))
+        Visible: =If(varLlaves="1" && _bandFirma2, false, First(colBandLlaves)._bandEntrega, _bandFirma2 && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).ApellidosProt),_bandFirma2 && !IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt))
+        Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-10)
+        X: =Parent.Width/2-PenInput1_2.Width/2
+        Y: =Parent.Height/2-PenInput1_2.Height/2
+        ZIndex: =24
+
+    Group9_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =24
+
+        Rectangle3_4 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.76)
+            Height: =Parent.Height
+            Visible: =_bandLlaves Or _bandLlavesFaltantes Or _bandFirmaLlaves
+            Width: =Parent.Width
+            ZIndex: =17
+
+        Rectangle4_4 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =300
+            Visible: =_bandLlaves
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-20)
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Parent.Height/2-Self.Height/2
+            ZIndex: =18
+
+        Label9_4 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =100
+            Text: |-
+                ="POR MEDIO DE LA PRESENTE HAGO ENTREGA DE LAS LLAVES DE SEGURIDAD DE CAJAS DE LAS RUTAS DE REPARTO QUE QUEDAN A RESGUARDO EN EL AREA DE LIQUIDACIONES PARA SU CONTROL Y SEGURIDAD DE LAS MISMAS, EN BOLSA MACHIMBRADA CON NUMERO DE PLOMO:"
+            Visible: =_bandLlaves
+            Width: =Rectangle4_4.Width
+            X: =Rectangle4_4.X
+            Y: =Rectangle4_4.Y
+            ZIndex: =19
+
+        Button7_6 As button:
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =If(First(colBandLlaves)._bandEntrega,
+                    Set(varDGLlavesEnt, 
+                        Patch(EntregaRecepcionLlaves, Defaults(EntregaRecepcionLlaves),
+                            {
+                                Title: "L-",
+                                NombreLiqui: txtNombre1.Text,
+                                ApellidosLiqui: txtApellidos1.Text,
+                                FirmaLiqui: varFirmaLlaves1Final,
+                                NombreProt: txtNombre2.Text,
+                                ApellidosProt: txtApellidos2.Text,
+                                FirmaProt: varFirmaLlaves2Final,
+                                CantLlaves: Value(Trim(txtCantLlaves1.Text)),
+                                NumPlomo: txtNumPlomo1.Text
+                            }
+                        )
+                    );
+                    UpdateIf(EntregaRecepcionLlaves, ID=varDGLlavesEnt.ID, { Title: "L-"&varDGLlavesEnt.ID });
+                    Set(varLlavesRegistrado2, "L-"&varDGLlavesEnt.ID);
+                );
+                If(First(colBandLlaves)._bandRecepcion,
+                
+                    Set(varDGLlavesRec, 
+                        Patch(EntregaRecepcionLlaves, Defaults(EntregaRecepcionLlaves),
+                            {
+                                Title: varLlavesRegistrado2,
+                                NombreLiqui: txtNombre2.Text,
+                                ApellidosLiqui: txtApellidos2.Text,
+                                FirmaLiqui: varFirmaLlaves2Final,
+                                NombreProt: txtNombre1.Text,
+                                ApellidosProt: txtApellidos1.Text,
+                                FirmaProt: varFirmaLlaves1Final,
+                                CantLlaves: Value(Trim(txtCantLlaves1.Text)),
+                                NumPlomo: txtNumPlomo1.Text,
+                                Observaciones: If(Value(txtCantLlaves1.Text) < First(Filter(colEntRecLlaves, TipoAccion="ENTREGA")).CantLlaves && varLlaves="2", TextInput2.Text, ""),
+                                TipoAccion: "RECEPCION"
+                            }
+                        )
+                    );
+                );
+                Reset(txtNombre1);
+                Reset(txtApellidos1);
+                Reset(txtCantLlaves1);
+                Reset(txtNumPlomo1);
+                Reset(PenInput1_2);
+                Reset(txtNombre2);
+                Reset(txtApellidos2);
+                Reset(PenInput1_3);
+                
+                Set(_bandLlaves, false);
+                Navigate(Screen_Confirm_Llaves_Seguridad,ScreenTransition.Cover);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Registrar"
+            Visible: =_bandLlaves
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Label22.Y+Label22.Height*2
+            ZIndex: =20
+
+        Button7_7 As button:
+            Fill: =RGBA(184, 0, 0, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(_bandLlaves, false);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Cancelar"
+            Visible: =_bandLlaves
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Button7_6.Y+Button7_6.Height+20
+            ZIndex: =21
+
+    Label34 As label:
+        Text: =varLlavesRegistrado2
+        X: =24
+        Y: =660
+        ZIndex: =30
+
+    Group11 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =30
+
+        Rectangle5 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =400
+            Visible: =_bandLlavesFaltantes
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, Parent.Width/2, Parent.Width-20)
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Parent.Height/2-Self.Height/2
+            ZIndex: =25
+
+        Label33 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =60
+            Text: ="Estas regresando menos llaves de las que te entregaron, por favor ingresa las observaciones necesarias para explicar la falta de llaves"
+            Visible: =_bandLlavesFaltantes
+            Width: =Rectangle5.Width
+            X: =Rectangle5.X
+            Y: =Rectangle5.Y
+            ZIndex: =26
+
+        TextInput2 As text:
+            Default: =""
+            Height: =100
+            Mode: =TextMode.MultiLine
+            Visible: =_bandLlavesFaltantes
+            Width: =Label33.Width/2+Label33.Width/3
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Label33.Y+Label33.Height+50
+            ZIndex: =27
+
+        Button9 As button:
+            Fill: =RGBA(54, 176, 75, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =If(IsBlank(Trim(TextInput2.Text)), Notify("Debes de ingresar observaciones",NotificationType.Error),Set(_bandLlavesFaltantes, false);Set(_bandFirmaLlaves, true) )
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Aceptar"
+            Visible: =_bandLlavesFaltantes
+            X: =Parent.Width/2-Self.Width/2
+            Y: =TextInput2.Y+TextInput2.Height+Self.Height
+            ZIndex: =28
+
+        Button9_1 As button:
+            Fill: =RGBA(184, 0, 0, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(_bandLlavesFaltantes, false);
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Cancelar"
+            Visible: =_bandLlavesFaltantes
+            X: =Parent.Width/2-Self.Width/2
+            Y: =Button9.Y+Button9.Height*2
+            ZIndex: =29
+
+    Button10 As button:
+        OnSelect: |-
+            =Set(_bandFirmaLlaves, false);
+            Set(_bandLlaves, true);
+        Text: ="Botón"
+        X: =50
+        Y: =15
+        ZIndex: =31
+
+    Rectangle4_7 As rectangle:
+        BorderColor: =RGBA(0, 0, 0, 1)
+        BorderThickness: =1
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =300
+        Visible: =_bandFirmaLlaves
+        Width: =If(Screen_Registro_Reporte_Robo.Size > 2, Parent.Width/3, Parent.Width-20)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Parent.Height/2-Self.Height/2
+        ZIndex: =32
+
+    Button7_14 As button:
+        Fill: =RGBA(184, 0, 0, 1)
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: =Set(_bandFirmaLlaves, false);
+        RadiusBottomLeft: =100
+        RadiusBottomRight: =100
+        RadiusTopLeft: =100
+        RadiusTopRight: =100
+        Text: ="Cancelar"
+        Visible: =_bandFirmaLlaves
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Image5_14.Y+Image5_14.Height+20
+        ZIndex: =33
+
+    Label36 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Semibold
+        Text: =If(First(colBandLlaves)._bandEntrega, "Ingresa la de liquidaciones", "Ingresa la de Protección Patrimonial")
+        Visible: =_bandFirmaLlaves
+        Width: =Rectangle4_7.Width
+        X: =Rectangle4_7.X
+        Y: =Rectangle4_7.Y
+        ZIndex: =34
+
+    Image5_13 As image:
+        Height: =50
+        Image: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), If(varFirmaLlaves1=PenInput1_2.Image, BotónFirmaAceptada, BotónIngresarFirma), varLlaves="1",If(varFirmaLlaves1=PenInput1_2.Image, BotónFirmaAceptada, BotónIngresarFirma),BotónFirmaAceptada) 
+        OnSelect: =Reset(PenInput1_2);Set(_bandFirma, true);Set(_bandFirmaLlaves, false);
+        Visible: =_bandFirmaLlaves
+        Width: =Label36.Width
+        X: =Label36.X
+        Y: =Label36.Y+Label36.Height+10
+        ZIndex: =35
+
+    Label36_1 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Semibold
+        Text: =If(First(colBandLlaves)._bandEntrega, "Ingresa la de Protección Patrimonial", "Ingresa la de liquidaciones")
+        Visible: =_bandFirmaLlaves
+        Width: =Rectangle4_7.Width
+        X: =Rectangle4_7.X
+        Y: =Image5_13.Y+Image5_13.Height+10
+        ZIndex: =36
+
+    Image5_14 As image:
+        Height: =50
+        Image: =If(varLlaves="2" && First(colBandLlaves)._bandRecepcion && IsBlank(First(Filter(colEntRecLlaves, TipoAccion="RECEPCION")).ApellidosProt), If(varFirmaLlaves2=PenInput1_3.Image, BotónFirmaAceptada, BotónIngresarFirma), varLlaves="1",If(varFirmaLlaves2=PenInput1_3.Image, BotónFirmaAceptada, BotónIngresarFirma),BotónFirmaAceptada) 
+        OnSelect: =Reset(PenInput1_3);Set(_bandFirma2, true);Set(_bandFirmaLlaves, false);
+        Visible: =_bandFirmaLlaves
+        Width: =Label36_1.Width
+        X: =Label36_1.X
+        Y: =Label36_1.Y+Label36_1.Height+10
+        ZIndex: =37
+
+    Group7_16 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =40
+
+        Image7_22 As image:
+            Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2,50, 40)
+            X: =Parent.Width-Self.Width
+            Y: =20
+            ZIndex: =5
+
+        Icon1_24 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_22.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_22.Width
+            X: =Image7_22.X
+            Y: =Image7_22.Y
+            ZIndex: =6
+
+    Group7_15 As group:
+        Height: =5
+        Width: =5
+        X: =1306
+        Y: =40
+        ZIndex: =42
+
+        Image7_21 As image:
+            Height: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Registro_Llaves_Seguridad.Size > 2, 50, 40)
+            Y: =20
+            ZIndex: =3
+
+        Icon1_22 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_21.Height
+            Icon: =Icon.Cancel
+            OnSelect: =If(varLlaves="1", Navigate(Screen_Index_Llaves_Seguridad,ScreenTransition.Cover), Navigate(Screen_Historial_Llaves_Seguridad,ScreenTransition.Cover))
+            Width: =Image7_21.Width
+            X: =Image7_21.X
+            Y: =Image7_21.Y
+            ZIndex: =4
+

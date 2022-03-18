@@ -1,0 +1,163 @@
+Screen_Historial_Visitas As screen:
+    BackgroundImage: =PantallaCel3
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =Refresh(CheckinOutProvContr);
+        ClearCollect(colHistVisitas, Filter(CheckinOutProvContr, Title=varRegistroSelectProv.Title));
+
+    Label3_4 As label:
+        Align: =Align.Center
+        Color: =RGBA(184, 0, 0, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =60
+        Size: =If(Screen_Historial_Visitas.Size > 2, 30, 15)
+        Text: ="Seguridad / Protección"
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Label3_5 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(54, 176, 75, 1)
+        FontWeight: =FontWeight.Bold
+        Size: =If(Screen_Historial_Visitas.Size > 2, 20, 10)
+        Text: ="Historial de visitas de " & Upper(varRegistroSelectProv.Nombre)
+        Width: =Parent.Width
+        Y: =Label3_4.Y+Label3_4.Height
+        ZIndex: =2
+
+    Group7_6 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =6
+
+        Image7_15 As image:
+            Height: =If(Screen_Index.Size > 2, 50, 40)
+            Image: =BotónHome
+            Width: =If(Screen_Index.Size > 2, 50, 40)
+            X: =Parent.Width-Image7_15.Width
+            ZIndex: =4
+
+        Icon1_16 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_15.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Index,ScreenTransition.Cover)
+            Width: =Image7_15.Width
+            X: =Image7_15.X
+            Y: =Image7_15.Y
+            ZIndex: =5
+
+    Group7_9 As group:
+        Height: =5
+        Width: =5
+        X: =1286
+        Y: =40
+        ZIndex: =9
+
+        Image7_14 As image:
+            Height: =If(Screen_Index.Size > 2, 50, 40)
+            Image: =BotónAtrás
+            Width: =If(Screen_Index.Size > 2, 50, 40)
+            ZIndex: =7
+
+        Icon1_15 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 0)
+            Height: =Image7_14.Height
+            Icon: =Icon.Cancel
+            OnSelect: =Navigate(Screen_Detalle_Folio,ScreenTransition.Cover)
+            Width: =Image7_14.Width
+            X: =Image7_14.X
+            Y: =Image7_14.Y
+            ZIndex: =8
+
+    DataTable1 As dataTable.datatable:
+        BorderStyle: =BorderStyle.Solid
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0)
+        HeadingFill: =RGBA(235, 38, 44, 1)
+        Height: =Parent.Height-Label3_4.Height-Label3_5.Height-40
+        Items: =colHistVisitas
+        Width: =If(Screen_Historial_Visitas.Size > 2, Parent.Width/2+Parent.Width/3,Parent.Width-20)
+        X: =Parent.Width/2-Self.Width/2
+        Y: =Label3_5.Y+Label3_5.Height+20
+        ZIndex: =10
+
+        TipoVisita_Columna1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="Tipo Visita"
+            FieldName: ="TipoVisita"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =2
+            Text: =ThisItem.TipoVisita
+            Width: =If(Screen_Historial_Visitas.Size > 2, 120, 120)
+            X: =0
+            Y: =0
+            ZIndex: =13
+
+        CheckIn_Columna1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="Entrada"
+            FieldName: ="CheckIn"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =3
+            Text: =ThisItem.CheckIn
+            Width: =If(Screen_Historial_Visitas.Size > 2, 120, 120)
+            X: =0
+            Y: =0
+            ZIndex: =14
+
+        CheckOut_Columna1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="Salida"
+            FieldName: ="CheckOut"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =4
+            Text: =ThisItem.CheckOut
+            Width: =If(Screen_Historial_Visitas.Size > 2, 120, 120)
+            X: =0
+            Y: =0
+            ZIndex: =15
+
+        Comentarios_Columna1 As dataTableColumn.textualColumn:
+            AutoWidth: =true
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="Comentarios"
+            FieldName: ="Comentarios"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            LayoutHeight: =Parent.Height
+            Order: =5
+            Text: =ThisItem.Comentarios
+            Width: =If(Screen_Historial_Visitas.Size > 2, 100, 50)
+            X: =0
+            Y: =0
+            ZIndex: =16
+
+        Fecha_Columna1 As dataTableColumn.textualColumn:
+            AutoWidth: =false
+            DisplayMode: =DisplayMode.Edit
+            FieldDisplayName: ="Fecha"
+            FieldName: ="Fecha"
+            FieldVariantName: ="textualColumn"
+            Height: =Parent.Height
+            IsHyperlink: =false
+            LayoutHeight: =Parent.Height
+            Order: =1
+            Text: =ThisItem.Fecha
+            Width: =If(Screen_Historial_Visitas.Size > 2, 120, 120)
+            X: =0
+            Y: =0
+            ZIndex: =17
+

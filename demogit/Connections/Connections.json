@@ -1,0 +1,79 @@
+{
+  "ce847283-b187-48f7-9f18-00f635eaa271": {
+    "connectionInstanceId": "/providers/microsoft.powerapps/apis/shared_sharepointonline/connections/8dbc2353230b4b41b618e7c26548eaab",
+    "connectionParameters": {
+      "sku": "Enterprise"
+    },
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "SharePoint",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1539/1.0.1539.2620/sharepointonline/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {
+      "https://sifragc.sharepoint.com/sites/KOF": {
+        "dataSources": {
+          "CheckinOutProvContr": {
+            "tableName": "e74b9eed-d833-4aeb-ae1c-c7ae1301d693"
+          },
+          "CheckinOutVisit": {
+            "tableName": "41d8d83b-f9c0-41b2-9f4b-39e7c4cca5cc"
+          },
+          "DescIndividuos": {
+            "tableName": "dee03b82-987b-404f-8f6e-584017ba081b"
+          },
+          "EntregaRecepcionLlaves": {
+            "tableName": "ecd06531-28d6-4f89-a98b-779babc133c4"
+          },
+          "HerraEquipo": {
+            "tableName": "567ad2c6-2e51-400b-9260-50c7921bdba2"
+          },
+          "HerraEquipoVisit": {
+            "tableName": "f68ab779-84a8-4350-9fd7-180f0b2ea0f0"
+          },
+          "RegIngreHerraEquipo": {
+            "tableName": "cc093056-98c3-4671-9e98-19bb061478d7"
+          },
+          "RegIngreHerraEquipoVisit": {
+            "tableName": "0aa8f486-48e8-478c-962a-4fe8bc7718ea"
+          },
+          "RegIngreProvContr": {
+            "tableName": "f86239d1-a37f-48d1-95bf-47c3c9c4b44c"
+          },
+          "RegIngreVisitas": {
+            "tableName": "129f22a7-0360-4727-b998-d4b197597dc5"
+          },
+          "RegistroAsistencia": {
+            "tableName": "687d5a05-ff19-4587-9906-ee70330b1cbc"
+          },
+          "ReporteRobos": {
+            "tableName": "4f3e8e92-1861-4eed-a938-4faf3a4d0650"
+          },
+          "Testimonios": {
+            "tableName": "f7721aa5-7b57-44d9-924b-6175ec96c07c"
+          }
+        }
+      }
+    },
+    "dataSources": [
+      "HerraEquipo",
+      "RegIngreHerraEquipo",
+      "RegIngreProvContr",
+      "DescIndividuos",
+      "CheckinOutProvContr",
+      "RegIngreHerraEquipoVisit",
+      "HerraEquipoVisit",
+      "RegIngreVisitas",
+      "CheckinOutVisit",
+      "ReporteRobos",
+      "Testimonios",
+      "EntregaRecepcionLlaves",
+      "RegistroAsistencia"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "ce847283-b187-48f7-9f18-00f635eaa271"
+  }
+}
