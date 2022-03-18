@@ -2178,7 +2178,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Container5",
-    "ParentIndex": 7,
+    "ParentIndex": 12,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -3072,7 +3072,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Icon1_2",
-    "ParentIndex": 5,
+    "ParentIndex": 2,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -3279,7 +3279,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Icon1_6",
-    "ParentIndex": 2,
+    "ParentIndex": 4,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -6145,7 +6145,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Image7_2",
-    "ParentIndex": 4,
+    "ParentIndex": 1,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -6368,7 +6368,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Image7_6",
-    "ParentIndex": 1,
+    "ParentIndex": 3,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -12593,7 +12593,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Label3_1",
-    "ParentIndex": 6,
+    "ParentIndex": 10,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -14222,7 +14222,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Label5",
-    "ParentIndex": 9,
+    "ParentIndex": 7,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -14532,7 +14532,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Label5_5",
-    "ParentIndex": 10,
+    "ParentIndex": 9,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -16131,7 +16131,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Rectangle1",
-    "ParentIndex": 3,
+    "ParentIndex": 5,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -16304,7 +16304,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "Rectangle2",
-    "ParentIndex": 8,
+    "ParentIndex": 6,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -16581,7 +16581,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "separador",
-    "ParentIndex": 11,
+    "ParentIndex": 8,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {
@@ -16898,7 +16898,7 @@
     "LayoutName": "",
     "MetaDataIDKey": "",
     "Name": "TextInput10",
-    "ParentIndex": 12,
+    "ParentIndex": 11,
     "PersistMetaDataIDKey": false,
     "Properties": [
       {

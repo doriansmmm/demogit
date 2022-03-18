@@ -110,7 +110,7 @@ Screen_Index As screen:
             ZIndex: =6
 
     Label12 As label:
-        Text: ="22222"
+        Text: ="111"
         X: =40
         Y: =40
         ZIndex: =21
